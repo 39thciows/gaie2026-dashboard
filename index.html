@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GAIE 2026 · Hall 1 Floor Plan</title>
+<!-- Fully self-contained: no external resources -->
+<style>
+:root {
+  --bg:       #f0ece4;
+  --surface:  #ffffff;
+  --border:   #d4cfc6;
+  --text:     #1a1612;
+  --muted:    #7a7268;
+  --accent:   #c0392b;
+  --gold:     #b7860a;
+  --hdr:      #1a1612;
+  --hdr-h:    54px;
+  --side-w:   290px;
+  --font-ui:  'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  --font-mono:'Consolas', 'Courier New', monospace;
+  --font-zh:  'Microsoft YaHei', 'PingFang SC', 'Noto Sans CJK SC', sans-serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-ui);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* HEADER */
+header {
+  height: var(--hdr-h);
+  background: var(--hdr);
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  gap: 14px;
+  flex-shrink: 0;
+  border-bottom: 3px solid var(--accent);
+}
+.hdr-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  white-space: nowrap;
+}
+.hdr-title {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.06em;
+}
+.hdr-title em { color: var(--accent); font-style: normal; }
+.hdr-sub {
+  font-size: 0.65rem;
+  color: #888;
+  letter-spacing: 0.04em;
+}
+.search-box {
+  flex: 1;
+  max-width: 400px;
+  position: relative;
+}
+.search-box svg {
+  position: absolute;
+  left: 10px; top: 50%;
+  transform: translateY(-50%);
+  color: #888;
+  pointer-events: none;
+  width: 14px; height: 14px;
+}
+#search {
+  width: 100%;
+  background: #2a2520;
+  border: 1px solid #3a3530;
+  border-radius: 6px;
+  padding: 7px 12px 7px 33px;
+  color: #eee;
+  font-size: 0.82rem;
+  font-family: var(--font-ui);
+  outline: none;
+  transition: border-color 0.2s;
+}
+#search:focus { border-color: var(--accent); }
+#search::placeholder { color: #666; }
+#match-count {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--gold);
+  white-space: nowrap;
+  min-width: 70px;
+}
+.hdr-btns { display:flex; gap:8px; margin-left:auto; }
+.btn {
+  font-family: var(--font-ui);
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 5px 11px;
+  border-radius: 5px;
+  border: 1px solid #3a3530;
+  background: transparent;
+  color: #ccc;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+  letter-spacing: 0.03em;
+}
+.btn:hover { border-color: #888; color: #fff; background: #ffffff10; }
+.btn.on { border-color: var(--accent); color: var(--accent); background: #c0392b18; }
+
+/* MAIN */
+.main { flex:1; display:flex; overflow:hidden; }
+
+/* MAP */
+.map-wrap {
+  flex: 1;
+  overflow: auto;
+  position: relative;
+  cursor: grab;
+  background: #e8e3da;
+}
+.map-wrap.dragging { cursor: grabbing; }
+#map-svg {
+  display: block;
+  background: #ffffff;
+  box-shadow: inset 0 0 0 1px #ccc;
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: var(--side-w);
+  flex-shrink: 0;
+  background: var(--surface);
+  border-left: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.sec-hdr {
+  padding: 10px 14px 8px;
+  font-size: 0.63rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  border-bottom: 1px solid var(--border);
+  background: #faf8f4;
+}
+.result-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 4px 0;
+}
+.r-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  padding: 8px 14px;
+  cursor: pointer;
+  border-left: 3px solid transparent;
+  transition: all 0.1s;
+}
+.r-item:hover { background: #f5f0e8; }
+.r-item.active {
+  background: #fef9ec;
+  border-left-color: var(--accent);
+}
+.r-dot {
+  width: 10px; height: 10px;
+  border-radius: 2px;
+  flex-shrink: 0;
+  margin-top: 3px;
+  border: 1px solid rgba(0,0,0,0.15);
+}
+.r-texts { flex:1; min-width:0; }
+.r-id {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: var(--muted);
+  font-weight: 500;
+}
+.r-zh {
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.3;
+  white-space: pre-line;
+}
+.r-en {
+  font-size: 0.72rem;
+  color: #6b7280;
+  line-height: 1.3;
+  white-space: pre-line;
+}
+.r-empty {
+  padding: 20px 14px;
+  color: var(--muted);
+  font-size: 0.78rem;
+  line-height: 1.6;
+  text-align: center;
+}
+
+/* LEGEND */
+.legend {
+  padding: 10px 14px;
+  border-top: 1px solid var(--border);
+  background: #faf8f4;
+}
+.legend-title {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+.legend-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3px 8px;
+}
+.l-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.65rem;
+  color: #4a4640;
+  cursor: pointer;
+  padding: 2px 3px;
+  border-radius: 3px;
+  transition: background 0.1s;
+}
+.l-item:hover { background: #f0ebe0; }
+.l-swatch {
+  width: 10px; height: 10px;
+  border-radius: 2px;
+  flex-shrink: 0;
+  border: 1px solid rgba(0,0,0,0.15);
+}
+
+/* STATUS BAR */
+.statusbar {
+  height: 22px;
+  background: #f5f0e8;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  gap: 18px;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
+/* TOOLTIP */
+#tooltip {
+  position: fixed;
+  background: #fffffff5;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 10px 13px;
+  pointer-events: none;
+  z-index: 999;
+  display: none;
+  max-width: 200px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+}
+#tooltip .tt-id { font-family: var(--font-mono); font-size:0.62rem; color:var(--muted); }
+#tooltip .tt-zh { font-size:0.92rem; font-weight:700; white-space:pre-line; margin-top:2px; }
+#tooltip .tt-en { font-size:0.75rem; color:#6b7280; white-space:pre-line; margin-top:2px; }
+
+/* SVG booth styles — CSS cannot directly style SVG child elements, use inline */
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hdr-brand">
+    <div class="hdr-title">WAIDE · GAIE 2026 &nbsp;<em>HALL 1</em></div>
+    <div class="hdr-sub">深圳会展中心（福田）· Shenzhen · May 14–16, 2026 · Bilingual Floor Plan</div>
+  </div>
+  <div class="search-box">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+    </svg>
+    <input type="text" id="search" placeholder="Ctrl+F · Search: Huawei, 华为, 1C34 …" autocomplete="off" spellcheck="false">
+  </div>
+  <span id="match-count"></span>
+  <div class="hdr-btns">
+    <button class="btn on" id="lbl-btn"  onclick="toggleLabels()">EN labels ✓</button>
+    <button class="btn"    onclick="fitView()">Fit</button>
+    <button class="btn"    onclick="resetZoom()">100%</button>
+    <button class="btn"    onclick="clearHighlight()">Clear</button>
+  </div>
+</header>
+
+<div class="main">
+  <div class="map-wrap" id="mapWrap">
+    <svg id="map-svg" xmlns="http://www.w3.org/2000/svg"></svg>
+  </div>
+  <div class="sidebar">
+    <div class="sec-hdr">Results / Selected</div>
+    <div class="result-list" id="resultList">
+      <div class="r-empty">
+        <strong>Ctrl+F</strong> or type above to find booths.<br><br>
+        Search by booth ID, Chinese or English name.<br><br>
+        Click any booth on the map to highlight it.
+      </div>
+    </div>
+    <div class="legend">
+      <div class="legend-title">Zone Legend — click to filter</div>
+      <div class="legend-grid" id="legendGrid"></div>
+    </div>
+  </div>
+</div>
+
+<div class="statusbar">
+  <span>Scroll = zoom · Drag = pan · Click booth = select</span>
+  <span id="sb-zoom">Zoom: 100%</span>
+  <span id="sb-n">Booths: 0</span>
+</div>
+
+<div id="tooltip">
+  <div class="tt-id" id="tt-id"></div>
+  <div class="tt-zh" id="tt-zh"></div>
+  <div class="tt-en" id="tt-en"></div>
+</div>
+
+<script>
+const BOOTHS = [{"id":"1A06","zh":"阿里巴巴\n国际站","en":"Alibaba\nIntl. Station","color":"#27ae60","x":24.5,"y":40.0,"x2":29.0,"y2":44.5},{"id":"1A08","zh":"万国\n电器","en":"Wanguo\nElectrical","color":"#27ae60","x":29.0,"y":40.0,"x2":33.5,"y2":44.5},{"id":"1A18","zh":"腾讯","en":"Tencent","color":"#27ae60","x":33.5,"y":40.0,"x2":37.5,"y2":44.5},{"id":"1A15","zh":"腾云\n智算","en":"Tengyun\nSmart Comp.","color":"#27ae60","x":37.5,"y":40.0,"x2":41.5,"y2":44.5},{"id":"1A25","zh":"投控数科","en":"TECO Digital","color":"#27ae60","x":41.5,"y":40.0,"x2":46.5,"y2":44.5},{"id":"1A48","zh":"四通","en":"Sitong","color":"#27ae60","x":53.0,"y":40.0,"x2":57.0,"y2":44.5},{"id":"1A49","zh":"信达盟","en":"Xindameng","color":"#27ae60","x":57.0,"y":40.0,"x2":61.0,"y2":44.5},{"id":"1A55","zh":"华鲲振宇","en":"Hua Kun\nZhenyu","color":"#27ae60","x":61.0,"y":40.0,"x2":65.5,"y2":44.5},{"id":"1A68","zh":"SAIIA","en":"SAIIA","color":"#27ae60","x":65.5,"y":40.0,"x2":69.0,"y2":44.5},{"id":"1A09","zh":"永泰\n新欣","en":"Yongtai\nXinxin","color":"#27ae60","x":69.0,"y":40.0,"x2":73.0,"y2":44.5},{"id":"1A85","zh":"AVATAi","en":"AVATAi","color":"#8e44ad","x":73.0,"y":40.0,"x2":77.0,"y2":44.5},{"id":"1B06","zh":"优艾智合","en":"YOUIBOT","color":"#8e44ad","x":21.0,"y":45.5,"x2":26.0,"y2":51.0},{"id":"1C58","zh":"投控\n东海","en":"TECO\nDonghai","color":"#8e44ad","x":26.0,"y":45.5,"x2":30.5,"y2":51.0},{"id":"1B10","zh":"深创投","en":"SZ Capital\nGroup","color":"#8e44ad","x":30.5,"y":45.5,"x2":35.0,"y2":51.0},{"id":"1B12","zh":"帕西尼","en":"Paxini","color":"#8e44ad","x":35.0,"y":45.5,"x2":39.0,"y2":51.0},{"id":"1B18","zh":"康冠","en":"Konvision","color":"#8e44ad","x":39.0,"y":45.5,"x2":43.0,"y2":51.0},{"id":"1B28","zh":"TCL","en":"TCL","color":"#8e44ad","x":43.0,"y":45.5,"x2":46.5,"y2":51.0},{"id":"1B33","zh":"荣耀","en":"HONOR","color":"#8e44ad","x":46.5,"y":45.5,"x2":50.5,"y2":51.0},{"id":"1B45","zh":"深智城","en":"SZ Smart City","color":"#2980b9","x":50.5,"y":45.5,"x2":55.0,"y2":51.0},{"id":"1B55","zh":"深圳湾科技","en":"Shenzhen Bay\nTechnology","color":"#2980b9","x":55.0,"y":45.5,"x2":62.0,"y2":51.0},{"id":"1B68","zh":"赛格\n集团","en":"SEG\nGroup","color":"#2980b9","x":62.0,"y":45.5,"x2":66.5,"y2":51.0},{"id":"1B75","zh":"深圳模力营\nAI生态社区","en":"SZ Moliying\nAI Ecosystem","color":"#2980b9","x":66.5,"y":45.5,"x2":71.5,"y2":51.0},{"id":"1B70","zh":"深天使","en":"Shenzhen Angels","color":"#2980b9","x":71.5,"y":45.5,"x2":74.5,"y2":51.0},{"id":"1B71","zh":"深高\n新投","en":"SZ Gaoxin\nInvestment","color":"#2980b9","x":74.5,"y":45.5,"x2":78.0,"y2":51.0},{"id":"1C85","zh":"深担保","en":"SZ Guarantee","color":"#2980b9","x":78.0,"y":45.5,"x2":81.5,"y2":51.0},{"id":"1C06","zh":"新佰人","en":"NNDRobot","color":"#8e44ad","x":21.0,"y":52.0,"x2":25.5,"y2":60.5},{"id":"1C09","zh":"凯中","en":"Kaizhong","color":"#8e44ad","x":25.5,"y":52.0,"x2":29.0,"y2":60.5},{"id":"1C10","zh":"肯綮","en":"Conchin\nTechnology","color":"#8e44ad","x":25.5,"y":56.5,"x2":29.0,"y2":60.5},{"id":"1C11","zh":"新译","en":"NewTranx Tech","color":"#8e44ad","x":29.0,"y":52.0,"x2":32.5,"y2":60.5},{"id":"1C12","zh":"众擎","en":"EngineAI","color":"#8e44ad","x":32.5,"y":52.0,"x2":36.5,"y2":60.5},{"id":"1D45","zh":"中试\n基地","en":"Pilot Testing\nBase","color":"#2980b9","x":36.5,"y":52.0,"x2":41.0,"y2":60.5},{"id":"1C28","zh":"福田产投\n展团","en":"Futian Inv.\nGroup","color":"#2980b9","x":41.0,"y":52.0,"x2":45.5,"y2":60.5},{"id":"1C33","zh":"中国\n电信","en":"China\nTelecom","color":"#2980b9","x":45.5,"y":52.0,"x2":50.0,"y2":60.5},{"id":"1C34","zh":"华为","en":"Huawei","color":"#2980b9","x":50.0,"y":52.0,"x2":54.0,"y2":60.5},{"id":"1C37","zh":"河套深圳园区","en":"Hetao SZ Park","color":"#2980b9","x":54.0,"y":52.0,"x2":61.0,"y2":60.5},{"id":"1C48","zh":"BIT","en":"BIT","color":"#2980b9","x":61.0,"y":52.0,"x2":65.0,"y2":60.5},{"id":"1C55","zh":"华强北","en":"Huaqiangbei","color":"#2980b9","x":65.0,"y":52.0,"x2":69.0,"y2":60.5},{"id":"1C76","zh":"星融元","en":"Xinrongyuan","color":"#8e44ad","x":69.0,"y":52.0,"x2":72.5,"y2":60.5},{"id":"1C75","zh":"智元","en":"AgiBot","color":"#8e44ad","x":72.5,"y":52.0,"x2":76.0,"y2":60.5},{"id":"1E68","zh":"深圳能源","en":"Shenzhen Energy","color":"#16a085","x":76.0,"y":52.0,"x2":80.0,"y2":60.5},{"id":"1E85","zh":"深高速","en":"SZ Expressway","color":"#16a085","x":80.0,"y":52.0,"x2":84.0,"y2":60.5},{"id":"1D06","zh":"三诺","en":"Sanno","color":"#8e44ad","x":21.0,"y":61.5,"x2":26.0,"y2":70.0},{"id":"1D08","zh":"磐鸿鑫","en":"Panhongxin","color":"#8e44ad","x":26.0,"y":61.5,"x2":30.0,"y2":70.0},{"id":"1D13","zh":"钛虎","en":"Ti5 Robot","color":"#8e44ad","x":30.0,"y":61.5,"x2":34.5,"y2":70.0},{"id":"1D89","zh":"福田区\n展馆","en":"Futian\nPavilion","color":"#2980b9","x":34.5,"y":61.5,"x2":41.0,"y2":70.0},{"id":"1D28","zh":"美芯晟\n科技","en":"Meixinsheng\nTech.","color":"#8e44ad","x":41.0,"y":61.5,"x2":45.5,"y2":65.5},{"id":"1D29","zh":"迈璞","en":"Maipu","color":"#8e44ad","x":41.0,"y":65.5,"x2":45.5,"y2":70.0},{"id":"1D33","zh":"朴赛","en":"Pusai","color":"#8e44ad","x":45.5,"y":61.5,"x2":50.0,"y2":70.0},{"id":"1D42","zh":"坪山区\n展馆","en":"Pingshan\nPavilion","color":"#2980b9","x":50.0,"y":61.5,"x2":55.5,"y2":70.0},{"id":"1E08","zh":"迈瑞·天海宸光","en":"Mindray\nTianhai","color":"#8e44ad","x":41.0,"y":65.5,"x2":55.5,"y2":70.0},{"id":"1D58","zh":"深圳港\n集团","en":"SZ Port\nGroup","color":"#16a085","x":55.5,"y":61.5,"x2":61.0,"y2":70.0},{"id":"1E47","zh":"国信证券","en":"Guosen\nSecurities","color":"#16a085","x":61.0,"y":61.5,"x2":65.0,"y2":70.0},{"id":"1C90","zh":"极氪","en":"Zeekr","color":"#8e44ad","x":65.0,"y":61.5,"x2":69.0,"y2":70.0},{"id":"1D11","zh":"海信","en":"Hisense","color":"#8e44ad","x":26.0,"y":65.5,"x2":30.0,"y2":70.0},{"id":"1D12","zh":"铨兴","en":"Quanxing","color":"#8e44ad","x":30.0,"y":65.5,"x2":34.5,"y2":70.0},{"id":"1E52","zh":"深圳燃气","en":"Shenzhen Gas","color":"#16a085","x":61.0,"y":65.5,"x2":65.0,"y2":70.0},{"id":"1F17","zh":"华赛","en":"Huasai","color":"#7f8c8d","x":21.0,"y":71.0,"x2":24.5,"y2":74.5},{"id":"1F18","zh":"博歌","en":"Boge","color":"#7f8c8d","x":21.0,"y":74.5,"x2":24.5,"y2":78.5},{"id":"1E75","zh":"上海立韬","en":"Shanghai Litao","color":"#8e44ad","x":24.5,"y":71.0,"x2":28.5,"y2":78.5},{"id":"1E10","zh":"创盈芯\nAI终端选品","en":"Chuangyingxin\nAI Selection","color":"#27ae60","x":28.5,"y":71.0,"x2":33.5,"y2":75.5},{"id":"1E05","zh":"湾东智算","en":"Wandong\nSmart Comp.","color":"#27ae60","x":33.5,"y":71.0,"x2":38.0,"y2":75.5},{"id":"1E12","zh":"马博士","en":"Dr. Ma","color":"#8e44ad","x":28.5,"y":75.5,"x2":33.5,"y2":78.5},{"id":"1E13","zh":"芯视佳","en":"Xinshijia","color":"#8e44ad","x":33.5,"y":75.5,"x2":38.0,"y2":78.5},{"id":"1E16","zh":"万联\n易达","en":"Wanlian\nYida","color":"#16a085","x":38.0,"y":71.0,"x2":42.0,"y2":78.5},{"id":"1E25","zh":"普渡机器人","en":"Pudu Robotics","color":"#8e44ad","x":42.0,"y":71.0,"x2":46.0,"y2":78.5},{"id":"1E38","zh":"中粮(福安)\n机器人科技园","en":"COFCO\nRobotics Park","color":"#8e44ad","x":46.0,"y":71.0,"x2":51.0,"y2":78.5},{"id":"1E28","zh":"智能硬件谷\n机器人街区","en":"HW Valley\nRobotics St.","color":"#8e44ad","x":51.0,"y":71.0,"x2":57.0,"y2":78.5},{"id":"1E49","zh":"人工智能终端\n全球选品中心","en":"AI Terminal\nGlobal Sel.","color":"#27ae60","x":57.0,"y":71.0,"x2":63.5,"y2":78.5},{"id":"1D20","zh":"思行\n智远","en":"Sixing\nZhiyuan","color":"#16a085","x":63.5,"y":71.0,"x2":67.5,"y2":78.5},{"id":"1D18","zh":"罗湖\n展团","en":"Luohu\nExhibition","color":"#2980b9","x":67.5,"y":71.0,"x2":72.0,"y2":78.5},{"id":"1D65","zh":"东方金信","en":"Oriental\nJinxin","color":"#c0392b","x":72.0,"y":71.0,"x2":76.0,"y2":74.5},{"id":"1D92","zh":"自变量","en":"X2Robot","color":"#8e44ad","x":72.0,"y":74.5,"x2":76.0,"y2":78.5},{"id":"1D66","zh":"迪拜商会","en":"Dubai\nChamber","color":"#c0392b","x":76.0,"y":71.0,"x2":79.5,"y2":74.5},{"id":"1D68","zh":"德中协会","en":"German-Chinese\nAssoc.","color":"#c0392b","x":76.0,"y":74.5,"x2":79.5,"y2":78.5},{"id":"1D81","zh":"大数\n跨境","en":"Big Data\nCross-Border","color":"#c0392b","x":79.5,"y":71.0,"x2":83.0,"y2":78.5},{"id":"1D73","zh":"阿根廷\n拉里奥哈","en":"Argentina\nLa Rioja","color":"#c0392b","x":83.0,"y":71.0,"x2":87.0,"y2":74.5},{"id":"1D72","zh":"马来西亚\n一带一路商会","en":"Malaysia\nB&R Chamber","color":"#c0392b","x":79.5,"y":74.5,"x2":83.5,"y2":78.5},{"id":"1D75","zh":"Sleep Cycle AB","en":"Sleep Cycle AB","color":"#c0392b","x":83.5,"y":74.5,"x2":87.0,"y2":78.5},{"id":"1E89","zh":"比利时\n瓦隆大区","en":"Belgium\nWallonia","color":"#c0392b","x":87.0,"y":71.0,"x2":90.5,"y2":78.5},{"id":"1D61","zh":"蓝海翔龙","en":"Lanhai\nXianglong","color":"#16a085","x":69.0,"y":62.5,"x2":72.0,"y2":70.0},{"id":"1F03","zh":"清闲智能","en":"Qingxian","color":"#7f8c8d","x":21.0,"y":79.5,"x2":24.4,"y2":84.0},{"id":"1F07","zh":"叩玄科技","en":"Kouxuan","color":"#7f8c8d","x":24.4,"y":79.5,"x2":27.8,"y2":84.0},{"id":"1F09","zh":"希施玛","en":"Xishima","color":"#7f8c8d","x":27.8,"y":79.5,"x2":31.2,"y2":84.0},{"id":"1F11","zh":"知鸟","en":"Zhiniao","color":"#7f8c8d","x":31.2,"y":79.5,"x2":34.0,"y2":84.0},{"id":"1F15","zh":"星云衡律","en":"Xingyun","color":"#7f8c8d","x":34.0,"y":79.5,"x2":37.0,"y2":84.0},{"id":"1F21","zh":"智聚万物","en":"Zhiju","color":"#7f8c8d","x":37.0,"y":79.5,"x2":39.8,"y2":84.0},{"id":"1F22","zh":"贸号科技","en":"Maohao","color":"#7f8c8d","x":39.8,"y":79.5,"x2":42.6,"y2":84.0},{"id":"1F25","zh":"并行科技","en":"Parallel","color":"#7f8c8d","x":42.6,"y":79.5,"x2":45.4,"y2":84.0},{"id":"1F26","zh":"优博讯","en":"Urovo","color":"#7f8c8d","x":45.4,"y":79.5,"x2":47.8,"y2":84.0},{"id":"1F29","zh":"快递100","en":"Kuaidi 100","color":"#7f8c8d","x":47.8,"y":79.5,"x2":50.8,"y2":84.0},{"id":"1F28","zh":"星元云创","en":"Xingyuan","color":"#7f8c8d","x":50.8,"y":79.5,"x2":53.4,"y2":84.0},{"id":"1F30","zh":"丽晶软件","en":"Lijing","color":"#7f8c8d","x":53.4,"y":79.5,"x2":56.0,"y2":84.0},{"id":"1F32","zh":"无限迭代","en":"Infinite","color":"#7f8c8d","x":56.0,"y":79.5,"x2":58.5,"y2":84.0},{"id":"1F33","zh":"知满科技","en":"Zhiman","color":"#7f8c8d","x":58.5,"y":79.5,"x2":61.2,"y2":84.0},{"id":"1F38","zh":"超恩智能","en":"Chaoen","color":"#7f8c8d","x":61.2,"y":79.5,"x2":63.8,"y2":84.0},{"id":"1F41","zh":"暗壳科技","en":"Anke","color":"#7f8c8d","x":63.8,"y":79.5,"x2":66.2,"y2":84.0},{"id":"1F42","zh":"快鹭科技","en":"Kuailu","color":"#7f8c8d","x":66.2,"y":79.5,"x2":68.5,"y2":84.0},{"id":"1F45","zh":"小熊U租","en":"Xiaoxiong","color":"#7f8c8d","x":68.5,"y":79.5,"x2":71.2,"y2":84.0},{"id":"1F47","zh":"明纬","en":"Mean Well","color":"#7f8c8d","x":71.2,"y":79.5,"x2":73.5,"y2":84.0},{"id":"1F46","zh":"广东鼎耀","en":"GD Dingyao","color":"#7f8c8d","x":73.5,"y":79.5,"x2":76.5,"y2":84.0},{"id":"1F50","zh":"汉王科技","en":"Hanvon","color":"#7f8c8d","x":76.5,"y":79.5,"x2":79.2,"y2":84.0},{"id":"1F31","zh":"深涌智能","en":"Shenyong","color":"#7f8c8d","x":79.2,"y":79.5,"x2":81.7,"y2":84.0},{"id":"1F62","zh":"电车盒子","en":"EV Box","color":"#7f8c8d","x":81.7,"y":79.5,"x2":84.0,"y2":84.0},{"id":"1F40","zh":"台北\n电脑公会","en":"Taipei\nComp. Guild","color":"#7f8c8d","x":84.0,"y":79.5,"x2":87.5,"y2":84.0},{"id":"1F43","zh":"隆瑞智能","en":"Longrui","color":"#7f8c8d","x":87.5,"y":79.5,"x2":90.0,"y2":84.0},{"id":"1F52","zh":"乐瑾科技","en":"Lejin","color":"#7f8c8d","x":90.0,"y":79.5,"x2":92.5,"y2":84.0},{"id":"1D77","zh":"火山引擎","en":"Volcengine\n(ByteDance)","color":"#27ae60","x":33.0,"y":84.0,"x2":38.0,"y2":87.0},{"id":"ROOM3","zh":"会议室3","en":"Conf. Room 3","color":"#d68910","x":13.0,"y":85.0,"x2":21.0,"y2":91.5},{"id":"IEZ","zh":"互动体验区","en":"Interactive\nExp. Zone","color":"#e67e22","x":24.0,"y":85.0,"x2":32.5,"y2":91.5},{"id":"CAFE","zh":"咖啡机器人街区\n华鑫立业","en":"Coffee Robot St.\nHuaxin Liye","color":"#e67e22","x":32.5,"y":85.0,"x2":43.5,"y2":91.5},{"id":"FILM","zh":"AI幻境电影节","en":"AI Fantasy\nFilm Festival","color":"#e67e22","x":46.5,"y":85.0,"x2":56.0,"y2":91.5},{"id":"ACCEL","zh":"加速进化\n德壹医疗","en":"Accelerate\nDeyi Medical","color":"#e67e22","x":56.0,"y":85.0,"x2":65.0,"y2":91.5},{"id":"ONSITE","zh":"现场服务处\n天安","en":"On-site Service\nTianan","color":"#95a5a6","x":65.0,"y":85.0,"x2":73.0,"y2":91.5},{"id":"VIP","zh":"VIP休息区","en":"VIP Lounge","color":"#d68910","x":73.0,"y":85.0,"x2":81.5,"y2":91.5},{"id":"ROOM4","zh":"会议室4","en":"Conf. Room 4","color":"#d68910","x":82.0,"y":85.0,"x2":90.5,"y2":91.5},{"id":"ROOM1","zh":"会议室1\n（开幕式）","en":"Conf. Room 1\n(Opening Cer.)","color":"#d68910","x":13.0,"y":51.0,"x2":21.0,"y2":62.0},{"id":"AIBOX","zh":"AI交感盒子","en":"AI Interaction\nBox","color":"#e67e22","x":13.0,"y":70.0,"x2":21.0,"y2":79.5},{"id":"ROOM2","zh":"会议室2","en":"Conf. Room 2","color":"#d68910","x":82.5,"y":70.0,"x2":90.5,"y2":85.0},{"id":"OPC","zh":"OPC & 龙虾岛\n供需对接区","en":"OPC & Lobster\nSupply-Demand","color":"#e67e22","x":82.5,"y":51.0,"x2":90.5,"y2":62.0}];
+const ZONES  = [{"color": "#8e44ad", "en": "Embodied Intelligence & Humanoid Robots", "zh": "具身智能及人形机器人"}, {"color": "#27ae60", "en": "Next-Gen AI Terminal Devices", "zh": "新一代人工智能终端"}, {"color": "#2980b9", "en": "Foundation Models & Industry Solutions", "zh": "大模型及行业应用"}, {"color": "#c0392b", "en": "International Exhibition Zone", "zh": "国际展区"}, {"color": "#16a085", "en": "Smart Digital City", "zh": "数智城市"}, {"color": "#7f8c8d", "en": "Innovation & Entrepreneurship", "zh": "创新创业"}, {"color": "#d68910", "en": "Conference Rooms / VIP", "zh": "会议室 / VIP"}, {"color": "#e67e22", "en": "Special Activity Zones", "zh": "特殊展区"}];
+
+// Virtual canvas matches ~PDF aspect 3370:2384 → use 1000:707
+const VW = 1000, VH = 707;
+
+let zoom = 1, panX = 0, panY = 0;
+let showLabels = true;
+let highlighted = new Set();
+let activeQ = '';
+
+const svg    = document.getElementById('map-svg');
+const mapWrap= document.getElementById('mapWrap');
+
+// ── INIT SVG SIZE ──────────────────────────────────────────────────
+function initSVG() {
+  svg.setAttribute('width',  mapWrap.clientWidth);
+  svg.setAttribute('height', mapWrap.clientHeight);
+}
+
+// ── COORDINATE HELPERS ─────────────────────────────────────────────
+function p(b) {
+  return {
+    x:  b.x  / 100 * VW,
+    y:  b.y  / 100 * VH,
+    x2: b.x2 / 100 * VW,
+    y2: b.y2 / 100 * VH,
+    cx: (b.x+b.x2)/2/100*VW,
+    cy: (b.y+b.y2)/2/100*VH,
+    w:  (b.x2-b.x)/100*VW,
+    h:  (b.y2-b.y)/100*VH,
+  };
+}
+
+// ── RENDER ─────────────────────────────────────────────────────────
+function render() {
+  svg.innerHTML = '';
+
+  // Floor background
+  const bg = el('rect', {x:0,y:0,width:VW,height:VH,fill:'#f8f6f0',stroke:'#bbb','stroke-width':1});
+  svg.appendChild(bg);
+
+  // Hall label
+  const hallLbl = el('text',{x:8,y:18,'font-size':'14','font-weight':'700',fill:'#c0392b',
+    'font-family':'Segoe UI,Helvetica Neue,Arial,sans-serif','letter-spacing':'0.05em'});
+  hallLbl.textContent='HALL 1';
+  svg.appendChild(hallLbl);
+
+  BOOTHS.forEach(b => {
+    const pp = p(b);
+    const isLit = highlighted.has(b.id);
+    const isDim = highlighted.size > 0 && !isLit;
+    const alpha = isDim ? '22' : 'cc';  // hex alpha
+
+    // ── Booth rectangle ───────────────────────────────────────────
+    const rect = el('rect', {
+      x: pp.x, y: pp.y,
+      width:  Math.max(pp.w, 8),
+      height: Math.max(pp.h, 8),
+      fill:   b.color + (isDim ? '18' : '22'),
+      stroke: b.color + (isDim ? '44' : 'bb'),
+      'stroke-width': isLit ? 2.5 : 1,
+      rx: 2,
+    });
+    if (isLit) {
+      rect.setAttribute('filter', 'drop-shadow(0 0 3px ' + b.color + '88)');
+    }
+    rect.style.cursor = 'pointer';
+    rect.addEventListener('click',       () => clickBooth(b));
+    rect.addEventListener('mouseenter',  e  => showTT(e, b));
+    rect.addEventListener('mousemove',   e  => moveTT(e));
+    rect.addEventListener('mouseleave',  hideTT);
+    svg.appendChild(rect);
+
+    const textAlpha = isDim ? '0.25' : '1';
+
+    // ── Booth ID (tiny, top-left) ─────────────────────────────────
+    const idT = el('text', {
+      x: pp.x + 2.5, y: pp.y + 5.5,
+      'font-size': Math.min(pp.h * 0.13, 4.5),
+      'font-family': 'Consolas,Courier New,monospace',
+      fill: '#666', opacity: isDim ? 0.2 : 0.7,
+    });
+    idT.style.pointerEvents = 'none';
+    idT.textContent = b.id;
+    svg.appendChild(idT);
+
+    // ── Chinese text (upper portion of booth) ────────────────────
+    const zhLines = b.zh.split('\n');
+    const enLines = b.en.split('\n');
+    const totalSegs = zhLines.length + enLines.length;
+    const segH = Math.min(pp.h / (totalSegs + 0.5), pp.h * 0.38);
+    const zhFs = Math.min(segH * 0.82, pp.w * 0.18, 7.5);
+    const enFs = Math.min(segH * 0.72, pp.w * 0.15, 6.5);
+
+    // vertical layout: split box into top half (zh) and bottom half (en)
+    const zhAreaCy = pp.y + pp.h * 0.35;
+    const enAreaCy = pp.y + pp.h * 0.70;
+
+    zhLines.forEach((line, i) => {
+      const yPos = zhAreaCy + (i - (zhLines.length-1)/2) * (zhFs * 1.3);
+      const t = el('text', {
+        x: pp.cx, y: yPos,
+        'font-size': Math.max(zhFs, 3),
+        'font-weight': '700',
+        'font-family': 'Microsoft YaHei,PingFang SC,Noto Sans CJK SC,sans-serif',
+        fill: '#1a1612',
+        opacity: textAlpha,
+        'text-anchor': 'middle',
+        'dominant-baseline': 'middle',
+      });
+      t.style.pointerEvents = 'none';
+      t.textContent = line;
+      svg.appendChild(t);
+    });
+
+    // ── English text (lower portion, yellow highlight) ────────────
+    if (showLabels) { enLines.forEach((line, i) => {
+      const yPos = enAreaCy + (i - (enLines.length-1)/2) * (enFs * 1.3);
+      // Yellow pill background
+      const textW = line.length * enFs * 0.58;
+      const bgR = el('rect', {
+        x: pp.cx - textW/2 - 1.5,
+        y: yPos - enFs * 0.7,
+        width:  textW + 3,
+        height: enFs * 1.35,
+        fill: '#fde68a',
+        rx: 1,
+        opacity: isDim ? 0.15 : 0.9,
+      });
+      bgR.style.pointerEvents = 'none';
+      svg.appendChild(bgR);
+
+      const t = el('text', {
+        x: pp.cx, y: yPos,
+        'font-size': Math.max(enFs, 2.8),
+        'font-weight': '600',
+        'font-family': 'Segoe UI,Helvetica Neue,Arial,sans-serif',
+        fill: '#1a1200',
+        opacity: textAlpha,
+        'text-anchor': 'middle',
+        'dominant-baseline': 'middle',
+      });
+      t.style.pointerEvents = 'none';
+      t.textContent = line;
+      svg.appendChild(t);
+    }); }  // end if (showLabels)
+  });
+
+  applyTransform();
+  document.getElementById('sb-n').textContent =
+    highlighted.size > 0 ? `Selected: ${highlighted.size}` : `Booths: ${BOOTHS.length}`;
+}
+
+function el(tag, attrs) {
+  const e = document.createElementNS('http://www.w3.org/2000/svg', tag);
+  for (const [k,v] of Object.entries(attrs)) e.setAttribute(k, v);
+  return e;
+}
+
+// ── TRANSFORM ─────────────────────────────────────────────────────
+function applyTransform() {
+  svg.setAttribute('viewBox', `${panX} ${panY} ${VW/zoom} ${VH/zoom}`);
+  document.getElementById('sb-zoom').textContent = `Zoom: ${Math.round(zoom*100)}%`;
+}
+
+function fitView() {
+  zoom=1; panX=0; panY=0; applyTransform();
+}
+function resetZoom() { fitView(); }
+
+// ── ZOOM (scroll) ──────────────────────────────────────────────────
+mapWrap.addEventListener('wheel', e => {
+  e.preventDefault();
+  const rect  = mapWrap.getBoundingClientRect();
+  const mx = (e.clientX - rect.left) / rect.width  * (VW/zoom) + panX;
+  const my = (e.clientY - rect.top)  / rect.height * (VH/zoom) + panY;
+  const f  = e.deltaY < 0 ? 1.13 : 0.88;
+  zoom = Math.max(0.4, Math.min(25, zoom*f));
+  panX = mx - (e.clientX - rect.left) / rect.width  * (VW/zoom);
+  panY = my - (e.clientY - rect.top)  / rect.height * (VH/zoom);
+  applyTransform();
+}, {passive:false});
+
+// ── PAN (drag) ─────────────────────────────────────────────────────
+((() => {
+  let drag=false, sx,sy,spx,spy;
+  mapWrap.addEventListener('mousedown', e => {
+    if (e.target.tagName === 'rect' && e.target !== svg.firstChild) return;
+    drag=true; sx=e.clientX; sy=e.clientY; spx=panX; spy=panY;
+    mapWrap.classList.add('dragging');
+  });
+  window.addEventListener('mouseup', () => { drag=false; mapWrap.classList.remove('dragging'); });
+  mapWrap.addEventListener('mousemove', e => {
+    if (!drag) return;
+    const rect = mapWrap.getBoundingClientRect();
+    panX = spx - (e.clientX-sx)/rect.width  * (VW/zoom);
+    panY = spy - (e.clientY-sy)/rect.height * (VH/zoom);
+    applyTransform();
+  });
+})());
+
+// ── TOOLTIP ────────────────────────────────────────────────────────
+const tooltip = document.getElementById('tooltip');
+function showTT(e, b) {
+  document.getElementById('tt-id').textContent = b.id;
+  document.getElementById('tt-zh').textContent = b.zh;
+  document.getElementById('tt-en').textContent = b.en;
+  tooltip.style.display = 'block';
+  moveTT(e);
+}
+function moveTT(e) {
+  tooltip.style.left = (e.clientX+15)+'px';
+  tooltip.style.top  = (e.clientY-10)+'px';
+}
+function hideTT() { tooltip.style.display = 'none'; }
+
+// ── CLICK BOOTH ────────────────────────────────────────────────────
+function clickBooth(b) {
+  if (highlighted.has(b.id)) highlighted.delete(b.id);
+  else highlighted.add(b.id);
+  render();
+  updateSidebar();
+  if (highlighted.has(b.id)) zoomTo(b);
+}
+
+function zoomTo(b) {
+  const pp = p(b);
+  const pad = 60;
+  zoom = Math.min(12, Math.max(zoom, 6));
+  panX = pp.cx - (VW/zoom)/2;
+  panY = pp.cy - (VH/zoom)/2;
+  applyTransform();
+}
+
+function toggleLabels() {
+  showLabels = !showLabels;
+  const btn = document.getElementById('lbl-btn');
+  btn.textContent = showLabels ? 'EN labels ✓' : 'EN labels ✗';
+  btn.classList.toggle('on', showLabels);
+  render();
+}
+
+function clearHighlight() {
+  highlighted.clear();
+  activeQ = '';
+  document.getElementById('search').value = '';
+  document.getElementById('match-count').textContent = '';
+  render();
+  showDefaultSidebar();
+}
+
+// ── SEARCH ─────────────────────────────────────────────────────────
+const searchEl    = document.getElementById('search');
+const resultList  = document.getElementById('resultList');
+const matchCount  = document.getElementById('match-count');
+
+searchEl.addEventListener('input', () => doSearch(searchEl.value));
+
+document.addEventListener('keydown', e => {
+  if ((e.ctrlKey||e.metaKey) && e.key==='f') {
+    e.preventDefault(); searchEl.focus(); searchEl.select();
+  }
+  if (e.key === 'Escape') clearHighlight();
+});
+
+function doSearch(q) {
+  activeQ = q.trim().toLowerCase();
+  highlighted.clear();
+  if (!activeQ) { render(); showDefaultSidebar(); matchCount.textContent=''; return; }
+  const hits = BOOTHS.filter(b =>
+    b.id.toLowerCase().includes(activeQ) ||
+    b.zh.toLowerCase().includes(activeQ) ||
+    b.en.toLowerCase().includes(activeQ)
+  );
+  hits.forEach(b => highlighted.add(b.id));
+  matchCount.textContent = hits.length ? hits.length+' found' : 'No results';
+  render();
+  renderResultList(hits);
+  if (hits.length===1) zoomTo(hits[0]);
+}
+
+function renderResultList(items) {
+  resultList.innerHTML = '';
+  if (!items.length) {
+    resultList.innerHTML = '<div class="r-empty">No booths matched your search.</div>';
+    return;
+  }
+  items.forEach(b => {
+    const d = document.createElement('div');
+    d.className = 'r-item' + (highlighted.has(b.id) ? ' active' : '');
+    d.innerHTML = `<div class="r-dot" style="background:${b.color}"></div>
+      <div class="r-texts">
+        <div class="r-id">${b.id}</div>
+        <div class="r-zh">${b.zh}</div>
+        <div class="r-en">${b.en}</div>
+      </div>`;
+    d.addEventListener('click', () => { highlighted.add(b.id); render(); zoomTo(b); });
+    resultList.appendChild(d);
+  });
+}
+
+function updateSidebar() {
+  if (!activeQ && highlighted.size) {
+    const sel = BOOTHS.filter(b => highlighted.has(b.id));
+    renderResultList(sel);
+  }
+}
+
+function showDefaultSidebar() {
+  resultList.innerHTML = '<div class="r-empty"><strong>Ctrl+F</strong> or type above to search.<br><br>Click any booth on the map to select it.</div>';
+}
+
+// ── LEGEND ─────────────────────────────────────────────────────────
+function buildLegend() {
+  const grid = document.getElementById('legendGrid');
+  ZONES.forEach(z => {
+    const d = document.createElement('div');
+    d.className = 'l-item';
+    d.innerHTML = `<div class="l-swatch" style="background:${z.color}"></div><span>${z.en}</span>`;
+    d.title = z.zh;
+    d.addEventListener('click', () => {
+      clearHighlight();
+      BOOTHS.filter(b=>b.color===z.color).forEach(b=>highlighted.add(b.id));
+      render();
+      renderResultList(BOOTHS.filter(b=>highlighted.has(b.id)));
+    });
+    grid.appendChild(d);
+  });
+}
+
+// ── INIT ───────────────────────────────────────────────────────────
+window.addEventListener('load', () => {
+  initSVG(); render(); buildLegend(); fitView();
+});
+window.addEventListener('resize', () => { initSVG(); applyTransform(); });
+</script>
+</body>
+</html>
