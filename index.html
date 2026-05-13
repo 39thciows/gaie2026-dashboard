@@ -2,495 +2,488 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GAIE 2026 · Hall 1 Floor Plan</title>
-<!-- Fully self-contained: no external resources -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>GAIE 2026 · Hall 1</title>
 <style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=DM+Mono:wght@400;500&display=swap');
+
 :root {
-  --bg:       #f0ece4;
-  --surface:  #ffffff;
-  --border:   #d4cfc6;
-  --text:     #1a1612;
-  --muted:    #7a7268;
-  --accent:   #c0392b;
-  --gold:     #b7860a;
-  --hdr:      #1a1612;
-  --hdr-h:    54px;
-  --side-w:   290px;
-  --font-ui:  'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-  --font-mono:'Consolas', 'Courier New', monospace;
-  --font-zh:  'Microsoft YaHei', 'PingFang SC', 'Noto Sans CJK SC', sans-serif;
+  --bg:      #f4f4f7;
+  --surface: #ffffff;
+  --border:  #e0e0ea;
+  --text:    #1a1a2e;
+  --muted:   #8888a8;
+  --accent:  #5b4ee0;
+  --accent2: #e05040;
+  --panel-w: 280px;
 }
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body {
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+html, body {
+  width: 100%; height: 100%; overflow: hidden;
   background: var(--bg);
   color: var(--text);
-  font-family: var(--font-ui);
-  height: 100vh;
+  font-family: 'DM Sans', system-ui, sans-serif;
+}
+
+/* ── LAYOUT ── */
+#app {
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
 }
 
-/* header css removed */
+/* ── TOP STRIP ── */
+#topbar { display: none; }
+.brand-title {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--text);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.brand-title span { color: var(--accent); }
+.brand-sep {
+  color: var(--border);
+  font-size: 0.8rem;
+  flex-shrink: 0;
+}
 
-/* MAIN */
-.main { flex:1; display:flex; overflow:hidden; }
 
-/* MAP */
-.map-wrap {
+
+/* Zone filter pills */
+#zone-bar {
+  height: 32px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  gap: 6px;
+  overflow-x: auto;
+  flex-shrink: 0;
+  scrollbar-width: none;
+}
+#zone-bar::-webkit-scrollbar { display: none; }
+.zpill {
+  display: flex; align-items: center; gap: 5px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  border: 1px solid transparent;
+  background: var(--bg);
+  font-size: 0.63rem;
+  font-weight: 500;
+  color: var(--muted);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+.zpill:hover { color: var(--text); border-color: var(--border); }
+.zpill.active { color: var(--text); border-color: currentColor; }
+.zpill .zdot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.zpill-all {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 3px 10px;
+  font-size: 0.63rem;
+  font-weight: 600;
+  color: var(--text);
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: all 0.15s;
+}
+.zpill-all:hover, .zpill-all.active { border-color: var(--accent); color: var(--accent); }
+
+/* ── MAIN ── */
+#main {
   flex: 1;
-  overflow: hidden;
   position: relative;
+  overflow: hidden;
+}
+
+/* ── MAP ── */
+#map-wrap {
+  position: absolute;
+  inset: 0;
   cursor: grab;
-  background: #e8e3da;
   touch-action: none;
+  user-select: none;
 }
-.map-wrap.dragging { cursor: grabbing; }
-#map-svg {
-  display: block;
-  background: #ffffff;
-  box-shadow: inset 0 0 0 1px #ccc;
+#map-wrap:active { cursor: grabbing; }
+#map-svg { display: block; overflow: visible; }
+
+
+
+
+
+/* ── ZOOM CONTROLS ── */
+#zoom-ctrl {
+  position: absolute;
+  bottom: 16px; right: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  z-index: 10;
 }
-
-/* sidebar/legend/statusbar removed */
-
-/* TOOLTIP */
-#tooltip {
-  position: fixed;
-  background: #fffffff5;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 10px 13px;
-  pointer-events: none;
-  z-index: 999;
-  display: none;
-  max-width: 200px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+.zb {
+  width: 32px; height: 32px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--muted);
+  font-size: 1rem;
+  font-weight: 300;
+  transition: all 0.15s;
 }
-#tooltip .tt-id { font-family: var(--font-mono); font-size:0.62rem; color:var(--muted); }
-#tooltip .tt-zh { font-size:0.92rem; font-weight:700; white-space:pre-line; margin-top:2px; }
-#tooltip .tt-en { font-size:0.75rem; color:#6b7280; white-space:pre-line; margin-top:2px; }
+.zb:hover { color: var(--text); border-color: var(--accent); }
 
-/* SVG booth styles — CSS cannot directly style SVG child elements, use inline */
+
+
+
 </style>
 </head>
 <body>
+<div id="app">
 
-
-
-<div class="main">
-  <div class="map-wrap" id="mapWrap">
-    <svg id="map-svg" xmlns="http://www.w3.org/2000/svg"></svg>
+  <!-- SINGLE TOP STRIP -->
+  <div id="zone-bar">
+    <span class="brand-title">GAIE <span>2026</span></span>
+    <span class="brand-sep">·</span>
+    <button class="zpill-all active" onclick="filterZone(null, this)">All</button>
   </div>
+
+  <!-- MAIN -->
+  <div id="main">
+    <div id="map-wrap">
+      <svg id="map-svg"></svg>
+    </div>
+
+    <!-- Zoom controls -->
+    <div id="zoom-ctrl">
+      <button class="zb" onclick="doZoom(1.25)">+</button>
+      <button class="zb" onclick="doZoom(0.8)">−</button>
+      <button class="zb" title="Fit" onclick="fitView()" style="font-size:0.65rem;">⊞</button>
+    </div>
   </div>
-
-  </div>
-</div>
-
-
-
-
-  <div class="tt-zh" id="tt-zh"></div>
-  <div class="tt-en" id="tt-en"></div>
 </div>
 
 <script>
-const BOOTHS = [{"id":"1A06","zh":"阿里巴巴\n国际站","en":"Alibaba\nIntl. Station","color":"#27ae60","x":24.5,"y":40.0,"x2":29.0,"y2":44.5},{"id":"1A08","zh":"万国\n电器","en":"Wanguo\nElectrical","color":"#27ae60","x":29.0,"y":40.0,"x2":33.5,"y2":44.5},{"id":"1A18","zh":"腾讯","en":"Tencent","color":"#27ae60","x":33.5,"y":40.0,"x2":37.5,"y2":44.5},{"id":"1A15","zh":"腾云\n智算","en":"Tengyun\nSmart Comp.","color":"#27ae60","x":37.5,"y":40.0,"x2":41.5,"y2":44.5},{"id":"1A25","zh":"投控数科","en":"TECO Digital","color":"#27ae60","x":41.5,"y":40.0,"x2":46.5,"y2":44.5},{"id":"1A48","zh":"四通","en":"Sitong","color":"#27ae60","x":53.0,"y":40.0,"x2":57.0,"y2":44.5},{"id":"1A49","zh":"信达盟","en":"Xindameng","color":"#27ae60","x":57.0,"y":40.0,"x2":61.0,"y2":44.5},{"id":"1A55","zh":"华鲲振宇","en":"Hua Kun\nZhenyu","color":"#27ae60","x":61.0,"y":40.0,"x2":65.5,"y2":44.5},{"id":"1A68","zh":"SAIIA","en":"SAIIA","color":"#27ae60","x":65.5,"y":40.0,"x2":69.0,"y2":44.5},{"id":"1A09","zh":"永泰\n新欣","en":"Yongtai\nXinxin","color":"#27ae60","x":69.0,"y":40.0,"x2":73.0,"y2":44.5},{"id":"1A85","zh":"AVATAi","en":"AVATAi","color":"#8e44ad","x":73.0,"y":40.0,"x2":77.0,"y2":44.5},{"id":"1B06","zh":"优艾智合","en":"YOUIBOT","color":"#8e44ad","x":21.0,"y":45.5,"x2":26.0,"y2":51.0},{"id":"1C58","zh":"投控\n东海","en":"TECO\nDonghai","color":"#8e44ad","x":26.0,"y":45.5,"x2":30.5,"y2":51.0},{"id":"1B10","zh":"深创投","en":"SZ Capital\nGroup","color":"#8e44ad","x":30.5,"y":45.5,"x2":35.0,"y2":51.0},{"id":"1B12","zh":"帕西尼","en":"Paxini","color":"#8e44ad","x":35.0,"y":45.5,"x2":39.0,"y2":51.0},{"id":"1B18","zh":"康冠","en":"Konvision","color":"#8e44ad","x":39.0,"y":45.5,"x2":43.0,"y2":51.0},{"id":"1B28","zh":"TCL","en":"TCL","color":"#8e44ad","x":43.0,"y":45.5,"x2":46.5,"y2":51.0},{"id":"1B33","zh":"荣耀","en":"HONOR","color":"#8e44ad","x":46.5,"y":45.5,"x2":50.5,"y2":51.0},{"id":"1B45","zh":"深智城","en":"SZ Smart City","color":"#2980b9","x":50.5,"y":45.5,"x2":55.0,"y2":51.0},{"id":"1B55","zh":"深圳湾科技","en":"Shenzhen Bay\nTechnology","color":"#2980b9","x":55.0,"y":45.5,"x2":62.0,"y2":51.0},{"id":"1B68","zh":"赛格\n集团","en":"SEG\nGroup","color":"#2980b9","x":62.0,"y":45.5,"x2":66.5,"y2":51.0},{"id":"1B75","zh":"深圳模力营\nAI生态社区","en":"SZ Moliying\nAI Ecosystem","color":"#2980b9","x":66.5,"y":45.5,"x2":71.5,"y2":51.0},{"id":"1B70","zh":"深天使","en":"Shenzhen Angels","color":"#2980b9","x":71.5,"y":45.5,"x2":74.5,"y2":51.0},{"id":"1B71","zh":"深高\n新投","en":"SZ Gaoxin\nInvestment","color":"#2980b9","x":74.5,"y":45.5,"x2":78.0,"y2":51.0},{"id":"1C85","zh":"深担保","en":"SZ Guarantee","color":"#2980b9","x":78.0,"y":45.5,"x2":81.5,"y2":51.0},{"id":"1C06","zh":"新佰人","en":"NNDRobot","color":"#8e44ad","x":21.0,"y":52.0,"x2":25.5,"y2":60.5},{"id":"1C09","zh":"凯中","en":"Kaizhong","color":"#8e44ad","x":25.5,"y":52.0,"x2":29.0,"y2":60.5},{"id":"1C10","zh":"肯綮","en":"Conchin\nTechnology","color":"#8e44ad","x":25.5,"y":56.5,"x2":29.0,"y2":60.5},{"id":"1C11","zh":"新译","en":"NewTranx Tech","color":"#8e44ad","x":29.0,"y":52.0,"x2":32.5,"y2":60.5},{"id":"1C12","zh":"众擎","en":"EngineAI","color":"#8e44ad","x":32.5,"y":52.0,"x2":36.5,"y2":60.5},{"id":"1D45","zh":"中试\n基地","en":"Pilot Testing\nBase","color":"#2980b9","x":36.5,"y":52.0,"x2":41.0,"y2":60.5},{"id":"1C28","zh":"福田产投\n展团","en":"Futian Inv.\nGroup","color":"#2980b9","x":41.0,"y":52.0,"x2":45.5,"y2":60.5},{"id":"1C33","zh":"中国\n电信","en":"China\nTelecom","color":"#2980b9","x":45.5,"y":52.0,"x2":50.0,"y2":60.5},{"id":"1C34","zh":"华为","en":"Huawei","color":"#2980b9","x":50.0,"y":52.0,"x2":54.0,"y2":60.5},{"id":"1C37","zh":"河套深圳园区","en":"Hetao SZ Park","color":"#2980b9","x":54.0,"y":52.0,"x2":61.0,"y2":60.5},{"id":"1C48","zh":"BIT","en":"BIT","color":"#2980b9","x":61.0,"y":52.0,"x2":65.0,"y2":60.5},{"id":"1C55","zh":"华强北","en":"Huaqiangbei","color":"#2980b9","x":65.0,"y":52.0,"x2":69.0,"y2":60.5},{"id":"1C76","zh":"星融元","en":"Xinrongyuan","color":"#8e44ad","x":69.0,"y":52.0,"x2":72.5,"y2":60.5},{"id":"1C75","zh":"智元","en":"AgiBot","color":"#8e44ad","x":72.5,"y":52.0,"x2":76.0,"y2":60.5},{"id":"1E68","zh":"深圳能源","en":"Shenzhen Energy","color":"#16a085","x":76.0,"y":52.0,"x2":80.0,"y2":60.5},{"id":"1E85","zh":"深高速","en":"SZ Expressway","color":"#16a085","x":80.0,"y":52.0,"x2":84.0,"y2":60.5},{"id":"1D06","zh":"三诺","en":"Sanno","color":"#8e44ad","x":21.0,"y":61.5,"x2":26.0,"y2":70.0},{"id":"1D08","zh":"磐鸿鑫","en":"Panhongxin","color":"#8e44ad","x":26.0,"y":61.5,"x2":30.0,"y2":70.0},{"id":"1D13","zh":"钛虎","en":"Ti5 Robot","color":"#8e44ad","x":30.0,"y":61.5,"x2":34.5,"y2":70.0},{"id":"1D89","zh":"福田区\n展馆","en":"Futian\nPavilion","color":"#2980b9","x":34.5,"y":61.5,"x2":41.0,"y2":70.0},{"id":"1D28","zh":"美芯晟\n科技","en":"Meixinsheng\nTech.","color":"#8e44ad","x":41.0,"y":61.5,"x2":45.5,"y2":65.5},{"id":"1D29","zh":"迈璞","en":"Maipu","color":"#8e44ad","x":41.0,"y":65.5,"x2":45.5,"y2":70.0},{"id":"1D33","zh":"朴赛","en":"Pusai","color":"#8e44ad","x":45.5,"y":61.5,"x2":50.0,"y2":70.0},{"id":"1D42","zh":"坪山区\n展馆","en":"Pingshan\nPavilion","color":"#2980b9","x":50.0,"y":61.5,"x2":55.5,"y2":70.0},{"id":"1E08","zh":"迈瑞·天海宸光","en":"Mindray\nTianhai","color":"#8e44ad","x":41.0,"y":65.5,"x2":55.5,"y2":70.0},{"id":"1D58","zh":"深圳港\n集团","en":"SZ Port\nGroup","color":"#16a085","x":55.5,"y":61.5,"x2":61.0,"y2":70.0},{"id":"1E47","zh":"国信证券","en":"Guosen\nSecurities","color":"#16a085","x":61.0,"y":61.5,"x2":65.0,"y2":70.0},{"id":"1C90","zh":"极氪","en":"Zeekr","color":"#8e44ad","x":65.0,"y":61.5,"x2":69.0,"y2":70.0},{"id":"1D11","zh":"海信","en":"Hisense","color":"#8e44ad","x":26.0,"y":65.5,"x2":30.0,"y2":70.0},{"id":"1D12","zh":"铨兴","en":"Quanxing","color":"#8e44ad","x":30.0,"y":65.5,"x2":34.5,"y2":70.0},{"id":"1E52","zh":"深圳燃气","en":"Shenzhen Gas","color":"#16a085","x":61.0,"y":65.5,"x2":65.0,"y2":70.0},{"id":"1F17","zh":"华赛","en":"Huasai","color":"#7f8c8d","x":21.0,"y":71.0,"x2":24.5,"y2":74.5},{"id":"1F18","zh":"博歌","en":"Boge","color":"#7f8c8d","x":21.0,"y":74.5,"x2":24.5,"y2":78.5},{"id":"1E75","zh":"上海立韬","en":"Shanghai Litao","color":"#8e44ad","x":24.5,"y":71.0,"x2":28.5,"y2":78.5},{"id":"1E10","zh":"创盈芯\nAI终端选品","en":"Chuangyingxin\nAI Selection","color":"#27ae60","x":28.5,"y":71.0,"x2":33.5,"y2":75.5},{"id":"1E05","zh":"湾东智算","en":"Wandong\nSmart Comp.","color":"#27ae60","x":33.5,"y":71.0,"x2":38.0,"y2":75.5},{"id":"1E12","zh":"马博士","en":"Dr. Ma","color":"#8e44ad","x":28.5,"y":75.5,"x2":33.5,"y2":78.5},{"id":"1E13","zh":"芯视佳","en":"Xinshijia","color":"#8e44ad","x":33.5,"y":75.5,"x2":38.0,"y2":78.5},{"id":"1E16","zh":"万联\n易达","en":"Wanlian\nYida","color":"#16a085","x":38.0,"y":71.0,"x2":42.0,"y2":78.5},{"id":"1E25","zh":"普渡机器人","en":"Pudu Robotics","color":"#8e44ad","x":42.0,"y":71.0,"x2":46.0,"y2":78.5},{"id":"1E38","zh":"中粮(福安)\n机器人科技园","en":"COFCO\nRobotics Park","color":"#8e44ad","x":46.0,"y":71.0,"x2":51.0,"y2":78.5},{"id":"1E28","zh":"智能硬件谷\n机器人街区","en":"HW Valley\nRobotics St.","color":"#8e44ad","x":51.0,"y":71.0,"x2":57.0,"y2":78.5},{"id":"1E49","zh":"人工智能终端\n全球选品中心","en":"AI Terminal\nGlobal Sel.","color":"#27ae60","x":57.0,"y":71.0,"x2":63.5,"y2":78.5},{"id":"1D20","zh":"思行\n智远","en":"Sixing\nZhiyuan","color":"#16a085","x":63.5,"y":71.0,"x2":67.5,"y2":78.5},{"id":"1D18","zh":"罗湖\n展团","en":"Luohu\nExhibition","color":"#2980b9","x":67.5,"y":71.0,"x2":72.0,"y2":78.5},{"id":"1D65","zh":"东方金信","en":"Oriental\nJinxin","color":"#c0392b","x":72.0,"y":71.0,"x2":76.0,"y2":74.5},{"id":"1D92","zh":"自变量","en":"X2Robot","color":"#8e44ad","x":72.0,"y":74.5,"x2":76.0,"y2":78.5},{"id":"1D66","zh":"迪拜商会","en":"Dubai\nChamber","color":"#c0392b","x":76.0,"y":71.0,"x2":79.5,"y2":74.5},{"id":"1D68","zh":"德中协会","en":"German-Chinese\nAssoc.","color":"#c0392b","x":76.0,"y":74.5,"x2":79.5,"y2":78.5},{"id":"1D81","zh":"大数\n跨境","en":"Big Data\nCross-Border","color":"#c0392b","x":79.5,"y":71.0,"x2":83.0,"y2":78.5},{"id":"1D73","zh":"阿根廷\n拉里奥哈","en":"Argentina\nLa Rioja","color":"#c0392b","x":83.0,"y":71.0,"x2":87.0,"y2":74.5},{"id":"1D72","zh":"马来西亚\n一带一路商会","en":"Malaysia\nB&R Chamber","color":"#c0392b","x":79.5,"y":74.5,"x2":83.5,"y2":78.5},{"id":"1D75","zh":"Sleep Cycle AB","en":"Sleep Cycle AB","color":"#c0392b","x":83.5,"y":74.5,"x2":87.0,"y2":78.5},{"id":"1E89","zh":"比利时\n瓦隆大区","en":"Belgium\nWallonia","color":"#c0392b","x":87.0,"y":71.0,"x2":90.5,"y2":78.5},{"id":"1D61","zh":"蓝海翔龙","en":"Lanhai\nXianglong","color":"#16a085","x":69.0,"y":62.5,"x2":72.0,"y2":70.0},{"id":"1F03","zh":"清闲智能","en":"Qingxian","color":"#7f8c8d","x":21.0,"y":79.5,"x2":24.4,"y2":84.0},{"id":"1F07","zh":"叩玄科技","en":"Kouxuan","color":"#7f8c8d","x":24.4,"y":79.5,"x2":27.8,"y2":84.0},{"id":"1F09","zh":"希施玛","en":"Xishima","color":"#7f8c8d","x":27.8,"y":79.5,"x2":31.2,"y2":84.0},{"id":"1F11","zh":"知鸟","en":"Zhiniao","color":"#7f8c8d","x":31.2,"y":79.5,"x2":34.0,"y2":84.0},{"id":"1F15","zh":"星云衡律","en":"Xingyun","color":"#7f8c8d","x":34.0,"y":79.5,"x2":37.0,"y2":84.0},{"id":"1F21","zh":"智聚万物","en":"Zhiju","color":"#7f8c8d","x":37.0,"y":79.5,"x2":39.8,"y2":84.0},{"id":"1F22","zh":"贸号科技","en":"Maohao","color":"#7f8c8d","x":39.8,"y":79.5,"x2":42.6,"y2":84.0},{"id":"1F25","zh":"并行科技","en":"Parallel","color":"#7f8c8d","x":42.6,"y":79.5,"x2":45.4,"y2":84.0},{"id":"1F26","zh":"优博讯","en":"Urovo","color":"#7f8c8d","x":45.4,"y":79.5,"x2":47.8,"y2":84.0},{"id":"1F29","zh":"快递100","en":"Kuaidi 100","color":"#7f8c8d","x":47.8,"y":79.5,"x2":50.8,"y2":84.0},{"id":"1F28","zh":"星元云创","en":"Xingyuan","color":"#7f8c8d","x":50.8,"y":79.5,"x2":53.4,"y2":84.0},{"id":"1F30","zh":"丽晶软件","en":"Lijing","color":"#7f8c8d","x":53.4,"y":79.5,"x2":56.0,"y2":84.0},{"id":"1F32","zh":"无限迭代","en":"Infinite","color":"#7f8c8d","x":56.0,"y":79.5,"x2":58.5,"y2":84.0},{"id":"1F33","zh":"知满科技","en":"Zhiman","color":"#7f8c8d","x":58.5,"y":79.5,"x2":61.2,"y2":84.0},{"id":"1F38","zh":"超恩智能","en":"Chaoen","color":"#7f8c8d","x":61.2,"y":79.5,"x2":63.8,"y2":84.0},{"id":"1F41","zh":"暗壳科技","en":"Anke","color":"#7f8c8d","x":63.8,"y":79.5,"x2":66.2,"y2":84.0},{"id":"1F42","zh":"快鹭科技","en":"Kuailu","color":"#7f8c8d","x":66.2,"y":79.5,"x2":68.5,"y2":84.0},{"id":"1F45","zh":"小熊U租","en":"Xiaoxiong","color":"#7f8c8d","x":68.5,"y":79.5,"x2":71.2,"y2":84.0},{"id":"1F47","zh":"明纬","en":"Mean Well","color":"#7f8c8d","x":71.2,"y":79.5,"x2":73.5,"y2":84.0},{"id":"1F46","zh":"广东鼎耀","en":"GD Dingyao","color":"#7f8c8d","x":73.5,"y":79.5,"x2":76.5,"y2":84.0},{"id":"1F50","zh":"汉王科技","en":"Hanvon","color":"#7f8c8d","x":76.5,"y":79.5,"x2":79.2,"y2":84.0},{"id":"1F31","zh":"深涌智能","en":"Shenyong","color":"#7f8c8d","x":79.2,"y":79.5,"x2":81.7,"y2":84.0},{"id":"1F62","zh":"电车盒子","en":"EV Box","color":"#7f8c8d","x":81.7,"y":79.5,"x2":84.0,"y2":84.0},{"id":"1F40","zh":"台北\n电脑公会","en":"Taipei\nComp. Guild","color":"#7f8c8d","x":84.0,"y":79.5,"x2":87.5,"y2":84.0},{"id":"1F43","zh":"隆瑞智能","en":"Longrui","color":"#7f8c8d","x":87.5,"y":79.5,"x2":90.0,"y2":84.0},{"id":"1F52","zh":"乐瑾科技","en":"Lejin","color":"#7f8c8d","x":90.0,"y":79.5,"x2":92.5,"y2":84.0},{"id":"1D77","zh":"火山引擎","en":"Volcengine\n(ByteDance)","color":"#27ae60","x":33.0,"y":84.0,"x2":38.0,"y2":87.0},{"id":"ROOM3","zh":"会议室3","en":"Conf. Room 3","color":"#d68910","x":13.0,"y":85.0,"x2":21.0,"y2":91.5},{"id":"IEZ","zh":"互动体验区","en":"Interactive\nExp. Zone","color":"#e67e22","x":24.0,"y":85.0,"x2":32.5,"y2":91.5},{"id":"CAFE","zh":"咖啡机器人街区\n华鑫立业","en":"Coffee Robot St.\nHuaxin Liye","color":"#e67e22","x":32.5,"y":85.0,"x2":43.5,"y2":91.5},{"id":"FILM","zh":"AI幻境电影节","en":"AI Fantasy\nFilm Festival","color":"#e67e22","x":46.5,"y":85.0,"x2":56.0,"y2":91.5},{"id":"ACCEL","zh":"加速进化\n德壹医疗","en":"Accelerate\nDeyi Medical","color":"#e67e22","x":56.0,"y":85.0,"x2":65.0,"y2":91.5},{"id":"ONSITE","zh":"现场服务处\n天安","en":"On-site Service\nTianan","color":"#95a5a6","x":65.0,"y":85.0,"x2":73.0,"y2":91.5},{"id":"VIP","zh":"VIP休息区","en":"VIP Lounge","color":"#d68910","x":73.0,"y":85.0,"x2":81.5,"y2":91.5},{"id":"ROOM4","zh":"会议室4","en":"Conf. Room 4","color":"#d68910","x":82.0,"y":85.0,"x2":90.5,"y2":91.5},{"id":"ROOM1","zh":"会议室1\n（开幕式）","en":"Conf. Room 1\n(Opening Cer.)","color":"#d68910","x":13.0,"y":51.0,"x2":21.0,"y2":62.0},{"id":"AIBOX","zh":"AI交感盒子","en":"AI Interaction\nBox","color":"#e67e22","x":13.0,"y":70.0,"x2":21.0,"y2":79.5},{"id":"ROOM2","zh":"会议室2","en":"Conf. Room 2","color":"#d68910","x":82.5,"y":70.0,"x2":90.5,"y2":85.0},{"id":"OPC","zh":"OPC & 龙虾岛\n供需对接区","en":"OPC & Lobster\nSupply-Demand","color":"#e67e22","x":82.5,"y":51.0,"x2":90.5,"y2":62.0}];
-const ZONES  = [{"color": "#8e44ad", "en": "Embodied Intelligence & Humanoid Robots", "zh": "具身智能及人形机器人"}, {"color": "#27ae60", "en": "Next-Gen AI Terminal Devices", "zh": "新一代人工智能终端"}, {"color": "#2980b9", "en": "Foundation Models & Industry Solutions", "zh": "大模型及行业应用"}, {"color": "#c0392b", "en": "International Exhibition Zone", "zh": "国际展区"}, {"color": "#16a085", "en": "Smart Digital City", "zh": "数智城市"}, {"color": "#7f8c8d", "en": "Innovation & Entrepreneurship", "zh": "创新创业"}, {"color": "#d68910", "en": "Conference Rooms / VIP", "zh": "会议室 / VIP"}, {"color": "#e67e22", "en": "Special Activity Zones", "zh": "特殊展区"}];
+const BOOTHS = [{"id": "1A06", "zh": "\u963f\u91cc\u5df4\u5df4\n\u56fd\u9645\u7ad9", "en": "Alibaba\nIntl. Station", "color": "#27ae60", "x": 13.5, "y": 2.0, "x2": 18.0, "y2": 6.5}, {"id": "1A08", "zh": "\u4e07\u56fd\n\u7535\u5668", "en": "Wanguo\nElectrical", "color": "#27ae60", "x": 18.0, "y": 2.0, "x2": 22.5, "y2": 6.5}, {"id": "1A18", "zh": "\u817e\u8baf", "en": "Tencent", "color": "#27ae60", "x": 22.5, "y": 2.0, "x2": 26.5, "y2": 6.5}, {"id": "1A15", "zh": "\u817e\u4e91\n\u667a\u7b97", "en": "Tengyun\nSmart Comp.", "color": "#27ae60", "x": 26.5, "y": 2.0, "x2": 30.5, "y2": 6.5}, {"id": "1A25", "zh": "\u6295\u63a7\u6570\u79d1", "en": "TECO Digital", "color": "#27ae60", "x": 30.5, "y": 2.0, "x2": 35.5, "y2": 6.5}, {"id": "1A48", "zh": "\u56db\u901a", "en": "Sitong", "color": "#27ae60", "x": 42.0, "y": 2.0, "x2": 46.0, "y2": 6.5}, {"id": "1A49", "zh": "\u4fe1\u8fbe\u76df", "en": "Xindameng", "color": "#27ae60", "x": 46.0, "y": 2.0, "x2": 50.0, "y2": 6.5}, {"id": "1A55", "zh": "\u534e\u9cb2\u632f\u5b87", "en": "Hua Kun\nZhenyu", "color": "#27ae60", "x": 50.0, "y": 2.0, "x2": 54.5, "y2": 6.5}, {"id": "1A68", "zh": "SAIIA", "en": "SAIIA", "color": "#27ae60", "x": 54.5, "y": 2.0, "x2": 58.0, "y2": 6.5}, {"id": "1A09", "zh": "\u6c38\u6cf0\n\u65b0\u6b23", "en": "Yongtai\nXinxin", "color": "#27ae60", "x": 58.0, "y": 2.0, "x2": 62.0, "y2": 6.5}, {"id": "1A85", "zh": "AVATAi", "en": "AVATAi", "color": "#8e44ad", "x": 62.0, "y": 2.0, "x2": 66.0, "y2": 6.5}, {"id": "1B06", "zh": "\u4f18\u827e\u667a\u5408", "en": "YOUIBOT", "color": "#8e44ad", "x": 10.0, "y": 7.5, "x2": 15.0, "y2": 13.0}, {"id": "1C58", "zh": "\u6295\u63a7\n\u4e1c\u6d77", "en": "TECO\nDonghai", "color": "#8e44ad", "x": 15.0, "y": 7.5, "x2": 19.5, "y2": 13.0}, {"id": "1B10", "zh": "\u6df1\u521b\u6295", "en": "SZ Capital\nGroup", "color": "#8e44ad", "x": 19.5, "y": 7.5, "x2": 24.0, "y2": 13.0}, {"id": "1B12", "zh": "\u5e15\u897f\u5c3c", "en": "Paxini", "color": "#8e44ad", "x": 24.0, "y": 7.5, "x2": 28.0, "y2": 13.0}, {"id": "1B18", "zh": "\u5eb7\u51a0", "en": "Konvision", "color": "#8e44ad", "x": 28.0, "y": 7.5, "x2": 32.0, "y2": 13.0}, {"id": "1B28", "zh": "TCL", "en": "TCL", "color": "#8e44ad", "x": 32.0, "y": 7.5, "x2": 35.5, "y2": 13.0}, {"id": "1B33", "zh": "\u8363\u8000", "en": "HONOR", "color": "#8e44ad", "x": 35.5, "y": 7.5, "x2": 39.5, "y2": 13.0}, {"id": "1B45", "zh": "\u6df1\u667a\u57ce", "en": "SZ Smart City", "color": "#2980b9", "x": 39.5, "y": 7.5, "x2": 44.0, "y2": 13.0}, {"id": "1B55", "zh": "\u6df1\u5733\u6e7e\u79d1\u6280", "en": "Shenzhen Bay\nTechnology", "color": "#2980b9", "x": 44.0, "y": 7.5, "x2": 51.0, "y2": 13.0}, {"id": "1B68", "zh": "\u8d5b\u683c\n\u96c6\u56e2", "en": "SEG\nGroup", "color": "#2980b9", "x": 51.0, "y": 7.5, "x2": 55.5, "y2": 13.0}, {"id": "1B75", "zh": "\u6df1\u5733\u6a21\u529b\u8425\nAI\u751f\u6001\u793e\u533a", "en": "SZ Moliying\nAI Ecosystem", "color": "#2980b9", "x": 55.5, "y": 7.5, "x2": 60.5, "y2": 13.0}, {"id": "1B70", "zh": "\u6df1\u5929\u4f7f", "en": "Shenzhen Angels", "color": "#2980b9", "x": 60.5, "y": 7.5, "x2": 63.5, "y2": 13.0}, {"id": "1B71", "zh": "\u6df1\u9ad8\n\u65b0\u6295", "en": "SZ Gaoxin\nInvestment", "color": "#2980b9", "x": 63.5, "y": 7.5, "x2": 67.0, "y2": 13.0}, {"id": "1C85", "zh": "\u6df1\u62c5\u4fdd", "en": "SZ Guarantee", "color": "#2980b9", "x": 67.0, "y": 7.5, "x2": 70.5, "y2": 13.0}, {"id": "1C06", "zh": "\u65b0\u4f70\u4eba", "en": "NNDRobot", "color": "#8e44ad", "x": 10.0, "y": 14.0, "x2": 14.5, "y2": 22.5}, {"id": "1C09", "zh": "\u51ef\u4e2d", "en": "Kaizhong", "color": "#8e44ad", "x": 14.5, "y": 14.0, "x2": 18.0, "y2": 18.4}, {"id": "1C10", "zh": "\u80af\u7dae", "en": "Conchin\nTechnology", "color": "#8e44ad", "x": 14.5, "y": 18.5, "x2": 18.0, "y2": 22.5}, {"id": "1C11", "zh": "\u65b0\u8bd1", "en": "NewTranx Tech", "color": "#8e44ad", "x": 18.0, "y": 14.0, "x2": 21.5, "y2": 22.5}, {"id": "1C12", "zh": "\u4f17\u64ce", "en": "EngineAI", "color": "#8e44ad", "x": 21.5, "y": 14.0, "x2": 25.5, "y2": 22.5}, {"id": "1D45", "zh": "\u4e2d\u8bd5\n\u57fa\u5730", "en": "Pilot Testing\nBase", "color": "#2980b9", "x": 25.5, "y": 14.0, "x2": 30.0, "y2": 22.5}, {"id": "1C28", "zh": "\u798f\u7530\u4ea7\u6295\n\u5c55\u56e2", "en": "Futian Inv.\nGroup", "color": "#2980b9", "x": 30.0, "y": 14.0, "x2": 34.5, "y2": 22.5}, {"id": "1C33", "zh": "\u4e2d\u56fd\n\u7535\u4fe1", "en": "China\nTelecom", "color": "#2980b9", "x": 34.5, "y": 14.0, "x2": 39.0, "y2": 22.5}, {"id": "1C34", "zh": "\u534e\u4e3a", "en": "Huawei", "color": "#2980b9", "x": 39.0, "y": 14.0, "x2": 43.0, "y2": 22.5}, {"id": "1C37", "zh": "\u6cb3\u5957\u6df1\u5733\u56ed\u533a", "en": "Hetao SZ Park", "color": "#2980b9", "x": 43.0, "y": 14.0, "x2": 50.0, "y2": 22.5}, {"id": "1C48", "zh": "BIT", "en": "BIT", "color": "#2980b9", "x": 50.0, "y": 14.0, "x2": 54.0, "y2": 22.5}, {"id": "1C55", "zh": "\u534e\u5f3a\u5317", "en": "Huaqiangbei", "color": "#2980b9", "x": 54.0, "y": 14.0, "x2": 58.0, "y2": 22.5}, {"id": "1C76", "zh": "\u661f\u878d\u5143", "en": "Xinrongyuan", "color": "#8e44ad", "x": 58.0, "y": 14.0, "x2": 61.5, "y2": 22.5}, {"id": "1C75", "zh": "\u667a\u5143", "en": "AgiBot", "color": "#8e44ad", "x": 61.5, "y": 14.0, "x2": 65.0, "y2": 22.5}, {"id": "1E68", "zh": "\u6df1\u5733\u80fd\u6e90", "en": "Shenzhen Energy", "color": "#16a085", "x": 65.0, "y": 14.0, "x2": 69.0, "y2": 22.5}, {"id": "1E85", "zh": "\u6df1\u9ad8\u901f", "en": "SZ Expressway", "color": "#16a085", "x": 69.0, "y": 14.0, "x2": 71.4, "y2": 22.5}, {"id": "1D06", "zh": "\u4e09\u8bfa", "en": "Sanno", "color": "#8e44ad", "x": 10.0, "y": 23.5, "x2": 15.0, "y2": 32.0}, {"id": "1D08", "zh": "\u78d0\u9e3f\u946b", "en": "Panhongxin", "color": "#8e44ad", "x": 15.0, "y": 23.5, "x2": 19.0, "y2": 27.4}, {"id": "1D13", "zh": "\u949b\u864e", "en": "Ti5 Robot", "color": "#8e44ad", "x": 19.0, "y": 23.5, "x2": 23.5, "y2": 27.4}, {"id": "1D89", "zh": "\u798f\u7530\u533a\n\u5c55\u9986", "en": "Futian\nPavilion", "color": "#2980b9", "x": 23.5, "y": 23.5, "x2": 30.0, "y2": 32.0}, {"id": "1D28", "zh": "\u7f8e\u82af\u665f\n\u79d1\u6280", "en": "Meixinsheng\nTech.", "color": "#8e44ad", "x": 30.0, "y": 23.5, "x2": 34.5, "y2": 27.5}, {"id": "1D29", "zh": "\u8fc8\u749e", "en": "Maipu", "color": "#8e44ad", "x": 30.0, "y": 27.5, "x2": 34.5, "y2": 32.0}, {"id": "1D33", "zh": "\u6734\u8d5b", "en": "Pusai", "color": "#8e44ad", "x": 34.5, "y": 23.5, "x2": 39.0, "y2": 32.0}, {"id": "1D42", "zh": "\u576a\u5c71\u533a\n\u5c55\u9986", "en": "Pingshan\nPavilion", "color": "#2980b9", "x": 39.0, "y": 23.5, "x2": 44.5, "y2": 32.0}, {"id": "1D58", "zh": "\u6df1\u5733\u6e2f\n\u96c6\u56e2", "en": "SZ Port\nGroup", "color": "#16a085", "x": 44.5, "y": 23.5, "x2": 50.0, "y2": 32.0}, {"id": "1E47", "zh": "\u56fd\u4fe1\u8bc1\u5238", "en": "Guosen\nSecurities", "color": "#16a085", "x": 50.0, "y": 23.5, "x2": 54.0, "y2": 27.4}, {"id": "1C90", "zh": "\u6781\u6c2a", "en": "Zeekr", "color": "#8e44ad", "x": 54.0, "y": 23.5, "x2": 58.0, "y2": 32.0}, {"id": "1D11", "zh": "\u6d77\u4fe1", "en": "Hisense", "color": "#8e44ad", "x": 15.0, "y": 27.5, "x2": 19.0, "y2": 32.0}, {"id": "1D12", "zh": "\u94e8\u5174", "en": "Quanxing", "color": "#8e44ad", "x": 19.0, "y": 27.5, "x2": 23.5, "y2": 32.0}, {"id": "1E52", "zh": "\u6df1\u5733\u71c3\u6c14", "en": "Shenzhen Gas", "color": "#16a085", "x": 50.0, "y": 27.5, "x2": 54.0, "y2": 32.0}, {"id": "1F17", "zh": "\u534e\u8d5b", "en": "Huasai", "color": "#7f8c8d", "x": 10.0, "y": 33.0, "x2": 13.5, "y2": 36.5}, {"id": "1F18", "zh": "\u535a\u6b4c", "en": "Boge", "color": "#7f8c8d", "x": 10.0, "y": 36.5, "x2": 13.5, "y2": 40.5}, {"id": "1E75", "zh": "\u4e0a\u6d77\u7acb\u97ec", "en": "Shanghai Litao", "color": "#8e44ad", "x": 13.5, "y": 33.0, "x2": 17.5, "y2": 40.5}, {"id": "1E10", "zh": "\u521b\u76c8\u82af\nAI\u7ec8\u7aef\u9009\u54c1", "en": "Chuangyingxin\nAI Selection", "color": "#27ae60", "x": 17.5, "y": 33.0, "x2": 22.5, "y2": 37.5}, {"id": "1E05", "zh": "\u6e7e\u4e1c\u667a\u7b97", "en": "Wandong\nSmart Comp.", "color": "#27ae60", "x": 22.5, "y": 33.0, "x2": 27.0, "y2": 37.5}, {"id": "1E12", "zh": "\u9a6c\u535a\u58eb", "en": "Dr. Ma", "color": "#8e44ad", "x": 17.5, "y": 37.5, "x2": 22.5, "y2": 40.5}, {"id": "1E13", "zh": "\u82af\u89c6\u4f73", "en": "Xinshijia", "color": "#8e44ad", "x": 22.5, "y": 37.5, "x2": 27.0, "y2": 40.5}, {"id": "1E16", "zh": "\u4e07\u8054\n\u6613\u8fbe", "en": "Wanlian\nYida", "color": "#16a085", "x": 27.0, "y": 33.0, "x2": 31.0, "y2": 40.5}, {"id": "1E25", "zh": "\u666e\u6e21\u673a\u5668\u4eba", "en": "Pudu Robotics", "color": "#8e44ad", "x": 31.0, "y": 33.0, "x2": 35.0, "y2": 40.5}, {"id": "1E38", "zh": "\u4e2d\u7cae(\u798f\u5b89)\n\u673a\u5668\u4eba\u79d1\u6280\u56ed", "en": "COFCO\nRobotics Park", "color": "#8e44ad", "x": 35.0, "y": 33.0, "x2": 40.0, "y2": 40.5}, {"id": "1E28", "zh": "\u667a\u80fd\u786c\u4ef6\u8c37\n\u673a\u5668\u4eba\u8857\u533a", "en": "HW Valley\nRobotics St.", "color": "#8e44ad", "x": 40.0, "y": 33.0, "x2": 46.0, "y2": 40.5}, {"id": "1E49", "zh": "\u4eba\u5de5\u667a\u80fd\u7ec8\u7aef\n\u5168\u7403\u9009\u54c1\u4e2d\u5fc3", "en": "AI Terminal\nGlobal Sel.", "color": "#27ae60", "x": 46.0, "y": 33.0, "x2": 52.5, "y2": 40.5}, {"id": "1D20", "zh": "\u601d\u884c\n\u667a\u8fdc", "en": "Sixing\nZhiyuan", "color": "#16a085", "x": 52.5, "y": 33.0, "x2": 56.5, "y2": 40.5}, {"id": "1D18", "zh": "\u7f57\u6e56\n\u5c55\u56e2", "en": "Luohu\nExhibition", "color": "#2980b9", "x": 56.5, "y": 33.0, "x2": 61.0, "y2": 40.5}, {"id": "1D65", "zh": "\u4e1c\u65b9\u91d1\u4fe1", "en": "Oriental\nJinxin", "color": "#c0392b", "x": 61.0, "y": 33.0, "x2": 65.0, "y2": 36.5}, {"id": "1D92", "zh": "\u81ea\u53d8\u91cf", "en": "X2Robot", "color": "#8e44ad", "x": 61.0, "y": 36.5, "x2": 65.0, "y2": 40.5}, {"id": "1D66", "zh": "\u8fea\u62dc\u5546\u4f1a", "en": "Dubai\nChamber", "color": "#c0392b", "x": 65.0, "y": 33.0, "x2": 68.5, "y2": 36.5}, {"id": "1D68", "zh": "\u5fb7\u4e2d\u534f\u4f1a", "en": "German-Chinese\nAssoc.", "color": "#c0392b", "x": 65.0, "y": 36.5, "x2": 68.5, "y2": 40.5}, {"id": "1D81", "zh": "\u5927\u6570\n\u8de8\u5883", "en": "Big Data\nCross-Border", "color": "#c0392b", "x": 68.5, "y": 33.0, "x2": 71.9, "y2": 36.5}, {"id": "1D73", "zh": "\u963f\u6839\u5ef7\n\u62c9\u91cc\u5965\u54c8", "en": "Argentina\nLa Rioja", "color": "#c0392b", "x": 72.0, "y": 33.0, "x2": 74.5, "y2": 36.5}, {"id": "1D72", "zh": "\u9a6c\u6765\u897f\u4e9a\n\u4e00\u5e26\u4e00\u8def\u5546\u4f1a", "en": "Malaysia\nB&R Chamber", "color": "#c0392b", "x": 68.5, "y": 36.5, "x2": 71.9, "y2": 40.5}, {"id": "1D75", "zh": "Sleep Cycle AB", "en": "Sleep Cycle AB", "color": "#c0392b", "x": 72.0, "y": 36.5, "x2": 74.5, "y2": 40.5}, {"id": "1E89", "zh": "\u6bd4\u5229\u65f6\n\u74e6\u9686\u5927\u533a", "en": "Belgium\nWallonia", "color": "#c0392b", "x": 74.5, "y": 33.0, "x2": 76.5, "y2": 40.5}, {"id": "1D61", "zh": "\u84dd\u6d77\u7fd4\u9f99", "en": "Lanhai\nXianglong", "color": "#16a085", "x": 58.0, "y": 24.5, "x2": 61.0, "y2": 32.0}, {"id": "1F03", "zh": "\u6e05\u95f2\u667a\u80fd", "en": "Qingxian", "color": "#7f8c8d", "x": 10.0, "y": 41.5, "x2": 13.4, "y2": 46.0}, {"id": "1F07", "zh": "\u53e9\u7384\u79d1\u6280", "en": "Kouxuan", "color": "#7f8c8d", "x": 13.4, "y": 41.5, "x2": 16.8, "y2": 46.0}, {"id": "1F09", "zh": "\u5e0c\u65bd\u739b", "en": "Xishima", "color": "#7f8c8d", "x": 16.8, "y": 41.5, "x2": 20.2, "y2": 46.0}, {"id": "1F11", "zh": "\u77e5\u9e1f", "en": "Zhiniao", "color": "#7f8c8d", "x": 20.2, "y": 41.5, "x2": 23.0, "y2": 46.0}, {"id": "1F15", "zh": "\u661f\u4e91\u8861\u5f8b", "en": "Xingyun", "color": "#7f8c8d", "x": 23.0, "y": 41.5, "x2": 26.0, "y2": 46.0}, {"id": "1F21", "zh": "\u667a\u805a\u4e07\u7269", "en": "Zhiju", "color": "#7f8c8d", "x": 26.0, "y": 41.5, "x2": 28.8, "y2": 46.0}, {"id": "1F22", "zh": "\u8d38\u53f7\u79d1\u6280", "en": "Maohao", "color": "#7f8c8d", "x": 28.8, "y": 41.5, "x2": 31.6, "y2": 46.0}, {"id": "1F25", "zh": "\u5e76\u884c\u79d1\u6280", "en": "Parallel", "color": "#7f8c8d", "x": 31.6, "y": 41.5, "x2": 34.4, "y2": 46.0}, {"id": "1F26", "zh": "\u4f18\u535a\u8baf", "en": "Urovo", "color": "#7f8c8d", "x": 34.4, "y": 41.5, "x2": 36.8, "y2": 46.0}, {"id": "1F29", "zh": "\u5feb\u9012100", "en": "Kuaidi 100", "color": "#7f8c8d", "x": 36.8, "y": 41.5, "x2": 39.8, "y2": 46.0}, {"id": "1F28", "zh": "\u661f\u5143\u4e91\u521b", "en": "Xingyuan", "color": "#7f8c8d", "x": 39.8, "y": 41.5, "x2": 42.4, "y2": 46.0}, {"id": "1F30", "zh": "\u4e3d\u6676\u8f6f\u4ef6", "en": "Lijing", "color": "#7f8c8d", "x": 42.4, "y": 41.5, "x2": 45.0, "y2": 46.0}, {"id": "1F32", "zh": "\u65e0\u9650\u8fed\u4ee3", "en": "Infinite", "color": "#7f8c8d", "x": 45.0, "y": 41.5, "x2": 47.5, "y2": 46.0}, {"id": "1F33", "zh": "\u77e5\u6ee1\u79d1\u6280", "en": "Zhiman", "color": "#7f8c8d", "x": 47.5, "y": 41.5, "x2": 50.2, "y2": 46.0}, {"id": "1F38", "zh": "\u8d85\u6069\u667a\u80fd", "en": "Chaoen", "color": "#7f8c8d", "x": 50.2, "y": 41.5, "x2": 52.8, "y2": 46.0}, {"id": "1F41", "zh": "\u6697\u58f3\u79d1\u6280", "en": "Anke", "color": "#7f8c8d", "x": 52.8, "y": 41.5, "x2": 55.2, "y2": 46.0}, {"id": "1F42", "zh": "\u5feb\u9e6d\u79d1\u6280", "en": "Kuailu", "color": "#7f8c8d", "x": 55.2, "y": 41.5, "x2": 57.5, "y2": 46.0}, {"id": "1F45", "zh": "\u5c0f\u718aU\u79df", "en": "Xiaoxiong", "color": "#7f8c8d", "x": 57.5, "y": 41.5, "x2": 60.2, "y2": 46.0}, {"id": "1F47", "zh": "\u660e\u7eac", "en": "Mean Well", "color": "#7f8c8d", "x": 60.2, "y": 41.5, "x2": 62.5, "y2": 46.0}, {"id": "1F46", "zh": "\u5e7f\u4e1c\u9f0e\u8000", "en": "GD Dingyao", "color": "#7f8c8d", "x": 62.5, "y": 41.5, "x2": 65.5, "y2": 46.0}, {"id": "1F50", "zh": "\u6c49\u738b\u79d1\u6280", "en": "Hanvon", "color": "#7f8c8d", "x": 65.5, "y": 41.5, "x2": 68.2, "y2": 46.0}, {"id": "1F31", "zh": "\u6df1\u6d8c\u667a\u80fd", "en": "Shenyong", "color": "#7f8c8d", "x": 68.2, "y": 41.5, "x2": 70.7, "y2": 46.0}, {"id": "1F62", "zh": "\u7535\u8f66\u76d2\u5b50", "en": "EV Box", "color": "#7f8c8d", "x": 70.7, "y": 41.5, "x2": 71.4, "y2": 46.0}, {"id": "1F40", "zh": "\u53f0\u5317\n\u7535\u8111\u516c\u4f1a", "en": "Taipei\nComp. Guild", "color": "#7f8c8d", "x": 73.0, "y": 41.5, "x2": 76.0, "y2": 46.0}, {"id": "1F43", "zh": "\u9686\u745e\u667a\u80fd", "en": "Longrui", "color": "#7f8c8d", "x": 76.6, "y": 41.5, "x2": 79.5, "y2": 46.0}, {"id": "1F52", "zh": "\u4e50\u747e\u79d1\u6280", "en": "Lejin", "color": "#7f8c8d", "x": 79.5, "y": 41.5, "x2": 82.0, "y2": 46.0}, {"id": "1D77", "zh": "\u706b\u5c71\u5f15\u64ce", "en": "Volcengine\n(ByteDance)", "color": "#27ae60", "x": 22.0, "y": 46.0, "x2": 27.0, "y2": 47.0}, {"id": "ROOM3", "zh": "\u4f1a\u8bae\u5ba43", "en": "Conf. Room 3", "color": "#d68910", "x": 2.0, "y": 47.0, "x2": 10.0, "y2": 53.5}, {"id": "IEZ", "zh": "\u4e92\u52a8\u4f53\u9a8c\u533a", "en": "Interactive\nExp. Zone", "color": "#e67e22", "x": 13.0, "y": 47.0, "x2": 21.5, "y2": 53.5}, {"id": "CAFE", "zh": "\u5496\u5561\u673a\u5668\u4eba\u8857\u533a\n\u534e\u946b\u7acb\u4e1a", "en": "Coffee Robot St.\nHuaxin Liye", "color": "#e67e22", "x": 35.5, "y": 47.0, "x2": 45.0, "y2": 53.5}, {"id": "FILM", "zh": "AI\u5e7b\u5883\u7535\u5f71\u8282", "en": "AI Fantasy\nFilm Festival", "color": "#e67e22", "x": 21.5, "y": 47.0, "x2": 35.5, "y2": 53.5}, {"id": "ACCEL", "zh": "\u52a0\u901f\u8fdb\u5316\n\u5fb7\u58f9\u533b\u7597", "en": "Accelerate\nDeyi Medical", "color": "#e67e22", "x": 45.0, "y": 47.0, "x2": 54.0, "y2": 53.5}, {"id": "ONSITE", "zh": "\u73b0\u573a\u670d\u52a1\u5904\n\u5929\u5b89", "en": "On-site Service\nTianan", "color": "#95a5a6", "x": 54.0, "y": 47.0, "x2": 62.0, "y2": 53.5}, {"id": "VIP", "zh": "VIP\u4f11\u606f\u533a", "en": "VIP Lounge", "color": "#d68910", "x": 62.0, "y": 47.0, "x2": 68.0, "y2": 53.5}, {"id": "ROOM4", "zh": "\u4f1a\u8bae\u5ba44", "en": "Conf. Room 4", "color": "#d68910", "x": 68.0, "y": 47.0, "x2": 73.5, "y2": 53.5}, {"id": "ROOM1", "zh": "\u4f1a\u8bae\u5ba41\n\uff08\u5f00\u5e55\u5f0f\uff09", "en": "Conf. Room 1\n(Opening Cer.)", "color": "#d68910", "x": 2.0, "y": 13.0, "x2": 10.0, "y2": 24.0}, {"id": "AIBOX", "zh": "AI\u4ea4\u611f\u76d2\u5b50", "en": "AI Interaction\nBox", "color": "#e67e22", "x": 2.0, "y": 32.0, "x2": 10.0, "y2": 41.5}, {"id": "ROOM2", "zh": "\u4f1a\u8bae\u5ba42", "en": "Conf. Room 2", "color": "#d68910", "x": 76.5, "y": 33.0, "x2": 82.0, "y2": 41.0}, {"id": "OPC", "zh": "OPC & \u9f99\u867e\u5c9b\n\u4f9b\u9700\u5bf9\u63a5\u533a", "en": "OPC & Lobster\nSupply-Demand", "color": "#e67e22", "x": 71.5, "y": 13.0, "x2": 79.5, "y2": 24.0}, {"id": "1F71", "zh": "\u5496\u5561\u533a", "en": "Cafe", "x": 73.5, "x2": 79.5, "y": 47.0, "y2": 53.5, "color": "#f97316"}];
 
-// Virtual canvas matches ~PDF aspect 3370:2384 → use 1000:707
-const VW = 1000, VH = 707;
+const ZONES = [
+  {color:"#8b5cf6", en:"Embodied Intelligence & Humanoid Robots", zh:"具身智能及人形机器人"},
+  {color:"#22c55e", en:"Next-Gen AI Terminal Devices", zh:"新一代人工智能终端"},
+  {color:"#3b82f6", en:"Foundation Models & Industry Solutions", zh:"大模型及行业应用"},
+  {color:"#ef4444", en:"International Exhibition Zone", zh:"国际展区"},
+  {color:"#14b8a6", en:"Smart Digital City", zh:"数智城市"},
+  {color:"#94a3b8", en:"Innovation & Entrepreneurship", zh:"创新创业"},
+  {color:"#f59e0b", en:"Conference Rooms / VIP", zh:"会议室 / VIP"},
+  {color:"#f97316", en:"Special Activity Zones", zh:"特殊展区"},
+];
 
+// Remap old colors to new palette
+const COLOR_MAP = {
+  "#8e44ad":"#8b5cf6","#27ae60":"#22c55e","#2980b9":"#3b82f6",
+  "#c0392b":"#ef4444","#16a085":"#14b8a6","#7f8c8d":"#94a3b8",
+  "#d68910":"#f59e0b","#e67e22":"#f97316","#95a5a6":"#94a3b8"
+};
+BOOTHS.forEach(b => { b.color = COLOR_MAP[b.color] || b.color; });
+
+// ── STATE ──
+const VW = 840;
+const VH = 560;
 let zoom = 1, panX = 0, panY = 0;
-let showLabels = true; // always on
 let highlighted = new Set();
-let activeQ = '';
+let activeZoneColor = null;
+let selectedBooth = null;
 
-const svg    = document.getElementById('map-svg');
-const mapWrap= document.getElementById('mapWrap');
+// ── DOM ──
+const svg      = document.getElementById('map-svg');
+const mapWrap  = document.getElementById('map-wrap');
+const tooltip  = {style:{display:'none'}};
+const results  = {classList:{remove:()=>{},toggle:()=>{}},innerHTML:'',appendChild:()=>{}};
+const panel    = {classList:{add:()=>{},remove:()=>{}}};
+const resetBtn = {classList:{add:()=>{},remove:()=>{}}};
+const searchEl = {value:'',addEventListener:()=>{},blur:()=>{}};
+const matchEl  = {textContent:''};
 
-// ── INIT SVG SIZE ──────────────────────────────────────────────────
-function initSVG() {
-  svg.setAttribute('width',  mapWrap.clientWidth);
-  svg.setAttribute('height', mapWrap.clientHeight);
+// ── ZONE PILLS ──
+const zbar = document.getElementById('zone-bar');
+ZONES.forEach(z => {
+  const pill = document.createElement('button');
+  pill.className = 'zpill';
+  pill.style.color = z.color;
+  pill.innerHTML = `<span class="zdot" style="background:${z.color}"></span>${z.en}`;
+  pill.title = z.en;
+  pill.addEventListener('click', () => filterZone(z.color, pill));
+  zbar.appendChild(pill);
+});
+
+function filterZone(color, el) {
+  document.querySelectorAll('.zpill, .zpill-all').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  activeZoneColor = color;
+  highlighted.clear();
+  if (color) {
+    BOOTHS.forEach(b => { if (b.color === color) highlighted.add(b.id); });
+    resetBtn.classList.add('show');
+  } else {
+    resetBtn.classList.remove('show');
+  }
+  render();
 }
 
-// ── COORDINATE HELPERS ─────────────────────────────────────────────
-function p(b) {
-  return {
-    x:  b.x  / 100 * VW,
-    y:  b.y  / 100 * VH,
-    x2: b.x2 / 100 * VW,
-    y2: b.y2 / 100 * VH,
-    cx: (b.x+b.x2)/2/100*VW,
-    cy: (b.y+b.y2)/2/100*VH,
-    w:  (b.x2-b.x)/100*VW,
-    h:  (b.y2-b.y)/100*VH,
-  };
+function clearAll() {
+  highlighted.clear();
+  activeZoneColor = null;
+  selectedBooth = null;
+  closePanel();
+  document.querySelectorAll('.zpill, .zpill-all').forEach(p => p.classList.remove('active'));
+  document.querySelector('.zpill-all').classList.add('active');
+  resetBtn.classList.remove('show');
+  render();
 }
 
-// ── RENDER ─────────────────────────────────────────────────────────
-function render() {
-  svg.innerHTML = '';
+// search removed
 
-  // Floor background
-  const bg = el('rect', {x:0,y:0,width:VW,height:VH,fill:'#f8f6f0',stroke:'#bbb','stroke-width':1});
-  svg.appendChild(bg);
+function showTT(){}
+function moveTT(){}
+function hideTT(){}
 
-  // Hall label
-  const hallLbl = el('text',{x:8,y:18,'font-size':'14','font-weight':'700',fill:'#c0392b',
-    'font-family':'Segoe UI,Helvetica Neue,Arial,sans-serif','letter-spacing':'0.05em'});
-  hallLbl.textContent='HALL 1';
-  svg.appendChild(hallLbl);
+function openPanel(){}
+function closePanel(){}
 
-  BOOTHS.forEach(b => {
-    const pp = p(b);
-    const isLit = highlighted.has(b.id);
-    const isDim = highlighted.size > 0 && !isLit;
-    const alpha = isDim ? '22' : 'cc';  // hex alpha
-
-    // ── Booth rectangle ───────────────────────────────────────────
-    const rect = el('rect', {
-      x: pp.x, y: pp.y,
-      width:  Math.max(pp.w, 8),
-      height: Math.max(pp.h, 8),
-      fill:   b.color + (isDim ? '18' : '22'),
-      stroke: b.color + (isDim ? '44' : 'bb'),
-      'stroke-width': isLit ? 2.5 : 1,
-      rx: 2,
-    });
-    if (isLit) {
-      rect.setAttribute('filter', 'drop-shadow(0 0 3px ' + b.color + '88)');
-    }
-    rect.style.cursor = 'pointer';
-    rect.addEventListener('click',       () => clickBooth(b));
-    rect.addEventListener('mouseenter',  e  => showTT(e, b));
-    rect.addEventListener('mousemove',   e  => moveTT(e));
-    rect.addEventListener('mouseleave',  hideTT);
-    svg.appendChild(rect);
-
-    const textAlpha = isDim ? '0.25' : '1';
-
-    // ── Booth ID (tiny, top-left) ─────────────────────────────────
-    const idT = el('text', {
-      x: pp.x + 2.5, y: pp.y + 5.5,
-      'font-size': Math.min(pp.h * 0.13, 4.5),
-      'font-family': 'Consolas,Courier New,monospace',
-      fill: '#666', opacity: isDim ? 0.2 : 0.7,
-    });
-    idT.style.pointerEvents = 'none';
-    idT.textContent = b.id;
-    svg.appendChild(idT);
-
-    // ── Chinese text (upper portion of booth) ────────────────────
-    const zhLines = b.zh.split('\n');
-    const enLines = b.en.split('\n');
-    const totalSegs = zhLines.length + enLines.length;
-    const segH = Math.min(pp.h / (totalSegs + 0.5), pp.h * 0.38);
-    const zhFs = Math.min(segH * 0.82, pp.w * 0.18, 7.5);
-    const enFs = Math.min(segH * 0.72, pp.w * 0.15, 6.5);
-
-    // vertical layout: split box into top half (zh) and bottom half (en)
-    const zhAreaCy = pp.y + pp.h * 0.35;
-    const enAreaCy = pp.y + pp.h * 0.70;
-
-    zhLines.forEach((line, i) => {
-      const yPos = zhAreaCy + (i - (zhLines.length-1)/2) * (zhFs * 1.3);
-      const t = el('text', {
-        x: pp.cx, y: yPos,
-        'font-size': Math.max(zhFs, 3),
-        'font-weight': '700',
-        'font-family': 'Microsoft YaHei,PingFang SC,Noto Sans CJK SC,sans-serif',
-        fill: '#1a1612',
-        opacity: textAlpha,
-        'text-anchor': 'middle',
-        'dominant-baseline': 'middle',
-      });
-      t.style.pointerEvents = 'none';
-      t.textContent = line;
-      svg.appendChild(t);
-    });
-
-    // ── English text (lower portion, yellow highlight) ────────────
-    if (showLabels) { enLines.forEach((line, i) => {
-      const yPos = enAreaCy + (i - (enLines.length-1)/2) * (enFs * 1.3);
-      // Yellow pill background
-      const textW = line.length * enFs * 0.58;
-      const bgR = el('rect', {
-        x: pp.cx - textW/2 - 1.5,
-        y: yPos - enFs * 0.7,
-        width:  textW + 3,
-        height: enFs * 1.35,
-        fill: '#fde68a',
-        rx: 1,
-        opacity: isDim ? 0.15 : 0.9,
-      });
-      bgR.style.pointerEvents = 'none';
-      svg.appendChild(bgR);
-
-      const t = el('text', {
-        x: pp.cx, y: yPos,
-        'font-size': Math.max(enFs, 2.8),
-        'font-weight': '600',
-        'font-family': 'Segoe UI,Helvetica Neue,Arial,sans-serif',
-        fill: '#1a1200',
-        opacity: textAlpha,
-        'text-anchor': 'middle',
-        'dominant-baseline': 'middle',
-      });
-      t.style.pointerEvents = 'none';
-      t.textContent = line;
-      svg.appendChild(t);
-    }); }  // end if (showLabels)
-  });
-
-  applyTransform();
-  window._sbN =
-    highlighted.size > 0 ? `Selected: ${highlighted.size}` : `Booths: ${BOOTHS.length}`;
-}
-
+// ── RENDER ──
 function el(tag, attrs) {
   const e = document.createElementNS('http://www.w3.org/2000/svg', tag);
   for (const [k,v] of Object.entries(attrs)) e.setAttribute(k, v);
   return e;
 }
 
-// ── TRANSFORM ─────────────────────────────────────────────────────
+function render() {
+  svg.innerHTML = '';
+
+  // Grid lines (subtle)
+  for (let x = 0; x <= VW; x += 100) {
+    svg.appendChild(el('line', {x1:x,y1:0,x2:x,y2:VH,stroke:'#e0e0ee','stroke-width':0.5}));
+  }
+  for (let y = 0; y <= VH; y += 80) {
+    svg.appendChild(el('line', {x1:0,y1:y,x2:VW,y2:y,stroke:'#e0e0ee','stroke-width':0.5}));
+  }
+
+  // Floor bg
+  svg.appendChild(el('rect', {x:0,y:0,width:VW,height:VH,fill:'#f8f7fc',stroke:'#d8d8e8','stroke-width':1}));
+
+  // Hall label
+  const hl = el('text', {x:12,y:22,'font-size':16,'font-weight':700,fill:'#e03030',
+    'font-family':'DM Sans,sans-serif','letter-spacing':'0.08em',opacity:0.9});
+  hl.textContent = 'HALL 1';
+  svg.appendChild(hl);
+
+  const sub = el('text', {x:12,y:33,'font-size':6.5,fill:'#aaaacc',
+    'font-family':'DM Mono,monospace','letter-spacing':'0.06em'});
+  sub.textContent = '1号馆 · GAIE 2026';
+  svg.appendChild(sub);
+
+  BOOTHS.forEach(b => {
+    const scx = mapWrap.clientWidth / VW;
+    const scy = mapWrap.clientHeight / VH;
+    const x  = b.x  / 100 * VW, y  = b.y  / 100 * VH;
+    const x2 = b.x2 / 100 * VW, y2 = b.y2 / 100 * VH;
+    const w = x2 - x, h = y2 - y;
+    const cx = x + w/2, cy = y + h/2;
+
+    const isLit = highlighted.size === 0 || highlighted.has(b.id);
+    const isDim = highlighted.size > 0 && !highlighted.has(b.id);
+
+    const rect = el('rect', {
+      x, y, width: Math.max(w,6), height: Math.max(h,6),
+      fill:   isDim ? b.color+'0a' : b.color+'20',
+      stroke: isDim ? b.color+'25' : b.color+'90',
+      'stroke-width': highlighted.has(b.id) ? 1.5 : 0.8,
+      rx: 2,
+    });
+    if (highlighted.has(b.id) && highlighted.size > 0) {
+      rect.setAttribute('filter', `drop-shadow(0 0 4px ${b.color}88)`);
+    }
+    rect.style.cursor = 'pointer';
+    rect.addEventListener('click', () => openPanel(b));
+    rect.addEventListener('mouseenter', e => showTT(e, b));
+    rect.addEventListener('mousemove', moveTT);
+    rect.addEventListener('mouseleave', hideTT);
+    svg.appendChild(rect);
+
+    if (isDim) return; // skip labels when dimmed
+
+    // ID label
+    const idT = el('text', {x: x+2, y: y+5,
+      'font-size': Math.min(h*0.13, 4.5),
+      'font-family': 'DM Mono,Courier New,monospace',
+      fill: '#aaaacc', opacity: 0.9});
+    idT.style.pointerEvents = 'none';
+    idT.textContent = b.id;
+    svg.appendChild(idT);
+
+    // ZH text
+    const zhLines = b.zh.split('\n');
+    const enLines = b.en.split('\n');
+    const segH = Math.min(h / (zhLines.length + enLines.length + 0.5), h * 0.38);
+    const zhFs = Math.min(segH*0.82, w*0.18, 7.5);
+    const enFs = Math.min(segH*0.72, w*0.15, 6.5);
+    const zhCy = cy - (enLines.length * enFs * 1.3)/2 - 1;
+    const enCy = cy + (zhLines.length * zhFs * 1.3)/2 + 1;
+
+    zhLines.forEach((line, i) => {
+      const yPos = zhCy + (i - (zhLines.length-1)/2) * (zhFs*1.3);
+      const t = el('text', {x: cx, y: yPos+zhFs*0.35,
+        'text-anchor':'middle','dominant-baseline':'middle',
+        'font-size': zhFs,'font-weight':700,
+        'font-family':'DM Sans,Segoe UI,sans-serif',
+        fill: b.color+'ee'});
+      t.style.pointerEvents = 'none';
+      t.textContent = line;
+      svg.appendChild(t);
+    });
+
+    enLines.forEach((line, i) => {
+      const yPos = enCy + (i - (enLines.length-1)/2) * (enFs*1.3);
+      const t = el('text', {x: cx, y: yPos+enFs*0.35,
+        'text-anchor':'middle','dominant-baseline':'middle',
+        'font-size': enFs,
+        'font-family':'DM Sans,Segoe UI,sans-serif',
+        fill: '#6666aa'});
+      t.style.pointerEvents = 'none';
+      t.textContent = line;
+      svg.appendChild(t);
+    });
+  });
+}
+
+// ── TRANSFORM ──
+function p2v(clientX, clientY) {
+  const r = mapWrap.getBoundingClientRect();
+  return {
+    x: (clientX - r.left) / r.width  * (VW/zoom) + panX,
+    y: (clientY - r.top)  / r.height * (VH/zoom) + panY,
+  };
+}
+
 function applyTransform() {
+  const w = mapWrap.clientWidth;
+  const h = mapWrap.clientHeight;
+  svg.setAttribute('width',  w);
+  svg.setAttribute('height', h);
   svg.setAttribute('viewBox', `${panX} ${panY} ${VW/zoom} ${VH/zoom}`);
-  window._sbZoom = `Zoom: ${Math.round(zoom*100)}%`;
 }
 
 function fitView() {
-  zoom=1; panX=0; panY=0; applyTransform();
+  const w = mapWrap.clientWidth;
+  const h = mapWrap.clientHeight;
+  // Scale to fill the viewport, keeping aspect ratio
+  const scaleX = w / VW;
+  const scaleY = h / VH;
+  zoom = Math.min(scaleX, scaleY);
+  panX = 0;
+  panY = 0;
+  applyTransform();
 }
-function resetZoom() { fitView(); }
 
-// ── ZOOM (scroll) ──────────────────────────────────────────────────
+function doZoom(f) {
+  const cx = panX + VW/zoom/2, cy = panY + VH/zoom/2;
+  zoom = Math.max(0.5, Math.min(20, zoom * f));
+  panX = cx - VW/zoom/2; panY = cy - VH/zoom/2;
+  applyTransform();
+}
+
+function clampPan() {
+  const maxX = VW - VW/zoom, maxY = VH - VH/zoom;
+  panX = Math.max(0, Math.min(panX, maxX));
+  panY = Math.max(0, Math.min(panY, maxY));
+}
+
+// ── MOUSE PAN/ZOOM ──
+let dragging = false, dragStart = null, panStart = null;
+mapWrap.addEventListener('mousedown', e => {
+  dragging = true; dragStart = {x:e.clientX, y:e.clientY};
+  panStart = {x:panX, y:panY};
+});
+window.addEventListener('mousemove', e => {
+  if (!dragging) return;
+  const dx = (e.clientX - dragStart.x) / mapWrap.clientWidth  * (VW/zoom);
+  const dy = (e.clientY - dragStart.y) / mapWrap.clientHeight * (VH/zoom);
+  panX = panStart.x - dx; panY = panStart.y - dy;
+  clampPan(); applyTransform();
+});
+window.addEventListener('mouseup', () => { dragging = false; });
 mapWrap.addEventListener('wheel', e => {
   e.preventDefault();
-  const rect  = mapWrap.getBoundingClientRect();
-  const mx = (e.clientX - rect.left) / rect.width  * (VW/zoom) + panX;
-  const my = (e.clientY - rect.top)  / rect.height * (VH/zoom) + panY;
-  const f  = e.deltaY < 0 ? 1.13 : 0.88;
-  zoom = Math.max(0.4, Math.min(25, zoom*f));
-  panX = mx - (e.clientX - rect.left) / rect.width  * (VW/zoom);
-  panY = my - (e.clientY - rect.top)  / rect.height * (VH/zoom);
-  applyTransform();
+  const f = e.deltaY < 0 ? 1.12 : 0.89;
+  const mp = p2v(e.clientX, e.clientY);
+  zoom = Math.max(0.5, Math.min(20, zoom * f));
+  panX = mp.x - (e.clientX - mapWrap.getBoundingClientRect().left) / mapWrap.clientWidth * (VW/zoom);
+  panY = mp.y - (e.clientY - mapWrap.getBoundingClientRect().top)  / mapWrap.clientHeight * (VH/zoom);
+  clampPan(); applyTransform();
 }, {passive:false});
 
-// ── PAN (drag) ─────────────────────────────────────────────────────
-((() => {
-  let drag=false, sx,sy,spx,spy;
-  mapWrap.addEventListener('mousedown', e => {
-    if (e.target.tagName === 'rect' && e.target !== svg.firstChild) return;
-    drag=true; sx=e.clientX; sy=e.clientY; spx=panX; spy=panY;
-    mapWrap.classList.add('dragging');
-  });
-  window.addEventListener('mouseup', () => { drag=false; mapWrap.classList.remove('dragging'); });
-  mapWrap.addEventListener('mousemove', e => {
-    if (!drag) return;
-    const rect = mapWrap.getBoundingClientRect();
-    panX = spx - (e.clientX-sx)/rect.width  * (VW/zoom);
-    panY = spy - (e.clientY-sy)/rect.height * (VH/zoom);
-    applyTransform();
-  });
-})());
-
-// ── TOOLTIP ────────────────────────────────────────────────────────
-const tooltip = {style:{display:'none'},querySelector:()=>{}};
-function showTT(e, b) {
-  window._ttId = b.id;
-  window._ttZh = b.zh;
-  window._ttEn = b.en;
-  // tooltip removed
-  moveTT(e);
-}
-function moveTT(e) {
-  // tooltip removed
-  // tooltip removed
-}
-function hideTT() {}
-
-// ── CLICK BOOTH ────────────────────────────────────────────────────
-function clickBooth(b) {
-  if (highlighted.has(b.id)) highlighted.delete(b.id);
-  else highlighted.add(b.id);
-  render();
-  updateSidebar();
-  if (highlighted.has(b.id)) zoomTo(b);
-}
-
-function zoomTo(b) {
-  const pp = p(b);
-  const pad = 60;
-  zoom = Math.min(12, Math.max(zoom, 6));
-  panX = pp.cx - (VW/zoom)/2;
-  panY = pp.cy - (VH/zoom)/2;
-  applyTransform();
-}
-
-function toggleLabels() {
-  showLabels = !showLabels;
-  const btn = ({textContent:'',classList:{toggle:()=>{}}});
-  btn.textContent = showLabels ? 'EN labels ✓' : 'EN labels ✗';
-  btn.classList.toggle('on', showLabels);
-  render();
-}
-
-function clearHighlight() {
-  highlighted.clear();
-  activeQ = '';
-  document.getElementById('search').value = '';
-  document.getElementById('match-count').textContent = '';
-  render();
-  showDefaultSidebar();
-}
-
-// ── SEARCH ─────────────────────────────────────────────────────────
-const searchEl    = {addEventListener:()=>{}, value:'', focus:()=>{}, select:()=>{}};
-const resultList  = {innerHTML:'', appendChild:()=>{}};
-const matchCount  = {textContent:''};
-
-// search removed
-
-// keydown removed
-
-function doSearch(q) {
-  activeQ = q.trim().toLowerCase();
-  highlighted.clear();
-  if (!activeQ) { render(); showDefaultSidebar(); matchCount.textContent=''; return; }
-  const hits = BOOTHS.filter(b =>
-    b.id.toLowerCase().includes(activeQ) ||
-    b.zh.toLowerCase().includes(activeQ) ||
-    b.en.toLowerCase().includes(activeQ)
-  );
-  hits.forEach(b => highlighted.add(b.id));
-  matchCount.textContent = hits.length ? hits.length+' found' : 'No results';
-  render();
-  renderResultList(hits);
-  if (hits.length===1) zoomTo(hits[0]);
-}
-
-function renderResultList(items) {
-  resultList.innerHTML = '';
-  if (!items.length) {
-    resultList.innerHTML = '<div class="r-empty">No booths matched your search.</div>';
-    return;
+// ── TOUCH ──
+let lastDist = null, lastMidX, lastMidY, touchPanX, touchPanY;
+mapWrap.addEventListener('touchstart', e => {
+  if (e.touches.length===2) {
+    lastDist = Math.hypot(e.touches[0].clientX-e.touches[1].clientX, e.touches[0].clientY-e.touches[1].clientY);
+    lastMidX = (e.touches[0].clientX+e.touches[1].clientX)/2;
+    lastMidY = (e.touches[0].clientY+e.touches[1].clientY)/2;
+  } else if (e.touches.length===1) {
+    touchPanX = e.touches[0].clientX; touchPanY = e.touches[0].clientY;
   }
-  items.forEach(b => {
-    const d = document.createElement('div');
-    d.className = 'r-item' + (highlighted.has(b.id) ? ' active' : '');
-    d.innerHTML = `<div class="r-dot" style="background:${b.color}"></div>
-      <div class="r-texts">
-        <div class="r-id">${b.id}</div>
-        <div class="r-zh">${b.zh}</div>
-        <div class="r-en">${b.en}</div>
-      </div>`;
-    d.addEventListener('click', () => { highlighted.add(b.id); render(); zoomTo(b); });
-    resultList.appendChild(d);
-  });
-}
-
-function updateSidebar() {
-  if (!activeQ && highlighted.size) {
-    const sel = BOOTHS.filter(b => highlighted.has(b.id));
-    renderResultList(sel);
+  e.preventDefault();
+},{passive:false});
+mapWrap.addEventListener('touchmove', e => {
+  const r = mapWrap.getBoundingClientRect();
+  if (e.touches.length===2 && lastDist!==null) {
+    const dist = Math.hypot(e.touches[0].clientX-e.touches[1].clientX, e.touches[0].clientY-e.touches[1].clientY);
+    const midX = (e.touches[0].clientX+e.touches[1].clientX)/2;
+    const midY = (e.touches[0].clientY+e.touches[1].clientY)/2;
+    const mp = p2v(midX, midY);
+    const f = dist/lastDist;
+    zoom = Math.max(0.5, Math.min(20, zoom*f));
+    panX = mp.x - (midX-r.left)/r.width*(VW/zoom);
+    panY = mp.y - (midY-r.top)/r.height*(VH/zoom);
+    panX -= (midX-lastMidX)/r.width*(VW/zoom);
+    panY -= (midY-lastMidY)/r.height*(VH/zoom);
+    lastDist=dist; lastMidX=midX; lastMidY=midY;
+    clampPan(); applyTransform();
+  } else if (e.touches.length===1) {
+    const dx = (e.touches[0].clientX-touchPanX)/r.width*(VW/zoom);
+    const dy = (e.touches[0].clientY-touchPanY)/r.height*(VH/zoom);
+    panX -= dx; panY -= dy;
+    touchPanX = e.touches[0].clientX; touchPanY = e.touches[0].clientY;
+    clampPan(); applyTransform();
   }
+  e.preventDefault();
+},{passive:false});
+mapWrap.addEventListener('touchend', e => { if(e.touches.length<2)lastDist=null; });
+
+// ── INIT ──
+function init() {
+  svg.setAttribute('width',  mapWrap.clientWidth);
+  svg.setAttribute('height', mapWrap.clientHeight);
+  fitView();
+  render();
 }
-
-function showDefaultSidebar() {
-  resultList.innerHTML = '<div class="r-empty"><strong>Ctrl+F</strong> or type above to search.<br><br>Click any booth on the map to select it.</div>';
-}
-
-// ── LEGEND ─────────────────────────────────────────────────────────
-function buildLegend() {
-  const grid = document.getElementById('legendGrid');
-  ZONES.forEach(z => {
-    const d = document.createElement('div');
-    d.className = 'l-item';
-    d.innerHTML = `<div class="l-swatch" style="background:${z.color}"></div><span>${z.en}</span>`;
-    d.title = z.zh;
-    d.addEventListener('click', () => {
-      clearHighlight();
-      BOOTHS.filter(b=>b.color===z.color).forEach(b=>highlighted.add(b.id));
-      render();
-      renderResultList(BOOTHS.filter(b=>highlighted.has(b.id)));
-    });
-    grid.appendChild(d);
-  });
-}
-
-// ── INIT ───────────────────────────────────────────────────────────
-window.addEventListener('load', () => {
-  initSVG(); render(); buildLegend(); fitView();
-});
-window.addEventListener('resize', () => { initSVG(); applyTransform(); });
-
-// ── TOUCH: pinch-zoom + pan ────────────────────────────────────────
-(function() {
-  var lastDist = null;
-  var lastMidX, lastMidY;
-  var lastTx, lastTy;
-  var touching = false;
-
-  mapWrap.addEventListener('touchstart', function(e) {
-    if (e.touches.length === 2) {
-      lastDist = Math.hypot(
-        e.touches[0].clientX - e.touches[1].clientX,
-        e.touches[0].clientY - e.touches[1].clientY
-      );
-      lastMidX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
-      lastMidY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
-    } else if (e.touches.length === 1) {
-      touching = true;
-      lastTx = e.touches[0].clientX;
-      lastTy = e.touches[0].clientY;
-    }
-    e.preventDefault();
-  }, {passive: false});
-
-  mapWrap.addEventListener('touchmove', function(e) {
-    var rect = mapWrap.getBoundingClientRect();
-    if (e.touches.length === 2 && lastDist !== null) {
-      var dist = Math.hypot(
-        e.touches[0].clientX - e.touches[1].clientX,
-        e.touches[0].clientY - e.touches[1].clientY
-      );
-      var midX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
-      var midY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
-      // zoom around midpoint
-      var mx = (midX - rect.left) / rect.width  * (VW/zoom) + panX;
-      var my = (midY - rect.top)  / rect.height * (VH/zoom) + panY;
-      var f = dist / lastDist;
-      zoom = Math.max(0.5, Math.min(25, zoom * f));
-      panX = mx - (midX - rect.left) / rect.width  * (VW/zoom);
-      panY = my - (midY - rect.top)  / rect.height * (VH/zoom);
-      // also pan with midpoint movement
-      panX -= (midX - lastMidX) / rect.width  * (VW/zoom);
-      panY -= (midY - lastMidY) / rect.height * (VH/zoom);
-      lastDist = dist;
-      lastMidX = midX; lastMidY = midY;
-      applyTransform();
-    } else if (e.touches.length === 1 && touching) {
-      var dx = e.touches[0].clientX - lastTx;
-      var dy = e.touches[0].clientY - lastTy;
-      panX -= dx / rect.width  * (VW/zoom);
-      panY -= dy / rect.height * (VH/zoom);
-      lastTx = e.touches[0].clientX;
-      lastTy = e.touches[0].clientY;
-      applyTransform();
-    }
-    e.preventDefault();
-  }, {passive: false});
-
-  mapWrap.addEventListener('touchend', function(e) {
-    if (e.touches.length < 2) lastDist = null;
-    if (e.touches.length === 0) touching = false;
-  });
-})();
-
+window.addEventListener('resize', () => { fitView(); });
+init();
 </script>
 </body>
 </html>
